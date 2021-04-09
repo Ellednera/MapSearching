@@ -43,7 +43,7 @@ public class Station {
 		return "This is " + name + " at (" + x + "," + y + ")";
 	}
 	
-	public void show_detials() {
+	public void showDetails() {
 		System.out.println(this.toString());
 		if(this.connections.isEmpty()) {
 			System.out.println("  '" + this.name + "' has no friends, it's sad :(");
@@ -76,9 +76,9 @@ public class Station {
 		System.out.println( house_1 );
 		
 		System.out.println("");
-		company.show_detials();
-		house_1.show_detials();
-		house_2.show_detials();
+		company.showDetails();
+		house_1.showDetails();
+		house_2.showDetails();
 		
 	}
 }
