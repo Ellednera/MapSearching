@@ -1,5 +1,3 @@
-package assets;
-
 import java.util.*;
 
 public class Station {
