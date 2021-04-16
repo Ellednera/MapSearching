@@ -3,7 +3,9 @@ Codes and assets for search algorithms
 
 Under assets is the codes for the map
 1. Station.java
-2. CityMap.java
+2. CityMap.java (compiling this file will generate more than one class file)
+
+##### Compile only CityMap.java, the Station class will be compiled together.
 
 ## Classes & Methods
 ### 1. Station
