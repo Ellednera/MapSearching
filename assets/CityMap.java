@@ -78,10 +78,20 @@ public class CityMap {
 		return partialNetworks;
 	}
 	
-	public void displayFullNetwork(ArrayList<List<Station>> _partialNetworks) {
+	public void displayFullNetwork(ArrayList<List<Station>> _partialNetworks, int maxLayers) {
 		// System.out.println( _partialNetworks.get(0).toString() ); // will print out all elements.toString()
 		// call linkAllConnectingStations() and print everything out, this is the solution, might need some optimizing though
-		ArrayList<List<Station>> fullNetworkList = linkAllConnectingStations( _partialNetworks );
+		
+		ArrayList<List<Station>> fullNetworkList;
+		if (maxLayers <= 2) {
+			fullNetworkList = linkAllConnectingStations( _partialNetworks );
+		} else {
+			
+			for (int i=1; i <= maxLayers-1; i++) {
+				_partialNetworks = linkAllConnectingStations( _partialNetworks );
+			}
+			fullNetworkList = _partialNetworks;
+		}
 		
 		// still need to process the output
 		System.out.println( fullNetworkList ); 
@@ -93,12 +103,17 @@ public class CityMap {
 	private ArrayList<List<Station>> linkAllConnectingStations(ArrayList<List<Station>> _partialNetworks) {
 		ArrayList<List<Station>> _fullNetworkList = new ArrayList<List<Station>>();
 		try {
+			// add all the partial connections into the list too, so that we will have more available connections to look up :)
+				// see the first for loop
 			// loop through to get the last element of List(n-1)
 			// and then get the first element of List(n)
 			for (int i=0; i<_partialNetworks.size(); i++) {
 				// last station in first network
 				List<Station> firstSingleNetwork = _partialNetworks.get(i);
 				Station firstNetworkLastStation = firstSingleNetwork.get( firstSingleNetwork.size()-1 );
+				
+				// add every partial network by default :)
+				_fullNetworkList.add( firstSingleNetwork );
 				
 				// loop through the rest of the paths
 				for (int j=0; j<_partialNetworks.size(); j++) {
@@ -125,7 +140,7 @@ public class CityMap {
 						
 						_fullNetworkList.add( singleFullPath );
 						
-					}	
+					}
 				}
 				
 			}
@@ -155,44 +170,48 @@ public class CityMap {
 	public static void main(String args[]) {
 		CityMap mapA = new CityMap();
 		
-		Station company = new Station(5, 5, "Company");
-		Station house_1 = new Station(10, 5, "House 1");
-		Station house_2 = new Station(1, 23, "House 2");
-		Station house_3 = new Station(1, 2, "House 3");
-		Station house_4 = new Station(9, 22, "House 4");
-		Station warehouse_1 = new Station(50, 50, "Warehouse 1");
-		Station warehouse_2 = new Station(100, 50, "Warehouse 2");
+		Station company = new Station(5, 5, "C"); // company
+		Station s1 = new Station(5, 5, "S1"); // station
+		Station h1 = new Station(5, 5, "H1"); // houses
+		Station h2 = new Station(5, 5, "H2");
+		Station h3 = new Station(5, 5, "H3");
+		Station h4 = new Station(5, 5, "H4");
+		Station h5 = new Station(5, 5, "H5");
+		Station h6 = new Station(5, 5, "H6"); 
+		Station f1 = new Station(5, 5, "F1"); // factory
+		Station w1 = new Station(5, 5, "W1"); // warehouse
+		Station w2 = new Station(5, 5, "W2"); // warehouse
+		Station a1 = new Station(5, 5, "A1"); // airport
+		Station p1 = new Station(5, 5, "P1"); // port
 		
 		// no connectTo() == error :)
+		/*
+		company.connectTo(s1, 2); s1.connectTo(h4, 1); mapA.createBridges(company, s1, h4);
+												h4.connectTo(h5, 2); mapA.createBridges(h4, h5);
+												h4.connectTo(h6, 4); mapA.createBridges(h4, h6);
 		
-		house_1.connectTo(company, 17);
-		mapA.createBridges(house_1, company);
+		company.connectTo(h1, 3); mapA.createBridges(company, h1);
+						  h1.connectTo(h2, 3); h2.connectTo(w1, 6); mapA.createBridges(h1, h2, w1);
+						  h1.connectTo(h3, 8); h3.connectTo(f1, 8); mapA.createBridges(h1, h3, f1);
+		*/
 		
+		// the challenging part :)
+		company.connectTo(w2, 4); mapA.createBridges(company, w2);
+						  w2.connectTo(h3, 10); mapA.createBridges(w2, h3);
+						  			   h3.connectTo(w1, 5); mapA.createBridges(h3, w1);
+						  			   h3.connectTo(f1, 9); mapA.createBridges(h3, f1);
 		// house_3.connectTo(house_3, 0);
 		// mapA.createBridges(house_3, house_3); 
 		// this loop needs to be fixed in the future, unless the distance is not 0
 		
-		// 3 stations in one go
-
-		company.connectTo(house_2, 15);	house_2.connectTo(house_3, 32);
-		mapA.createBridges(company, house_2, house_3); 
 		
-		// one connection will be left out, this will be solved by fixing the stations in the ideal manner
-		company.connectTo(house_4, 50);
-		mapA.createBridges(company, house_4); 
-		
-		house_4.connectTo(warehouse_1, 39); warehouse_1.connectTo(warehouse_2, 40);
-		mapA.createBridges(house_4, warehouse_1, warehouse_2);
-		
-		warehouse_2.connectTo(house_3, 999);
-		mapA.createBridges(warehouse_2, house_3);
 		// or the linkAllConnectingStations() private method can be set to public and called a few times 
 		// and store them into s data file
 		
 		// it won't be in sequence, we're using a HashMap :)
 		ArrayList<List<Station>> partialNetworks =  mapA.displayPartialNetwork();
 		
-		mapA.displayFullNetwork(partialNetworks);
+		mapA.displayFullNetwork(partialNetworks, 3);
 		
 		// System.out.println(house_1.name + " connected to " + house_3.name + "? " + house_1.isConnectedTo(house_3));
 		// System.out.println(house_3.name + " connected to " + house_1.name + "? " + house_3.isConnectedTo(house_1));
