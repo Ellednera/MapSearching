@@ -39,7 +39,7 @@ Calls *toString()* and adds on more details
 The default constructor
 
 #### public void createBridges(Station s1, Station s2, Station s3)
-Connects 3 *Station*s in one go. This is the maximum stations that can be connected **through this method**. See *displayFullNetwork()* method to link more than 3 *Station*s.
+Connects 3 *Station*s in one go. This is the maximum stations that can be connected **through this method**. See *processFullNetwork()* method to link more than 3 *Station*s.
 
 #### public void createBridges(Station s1, Station s2)
 Connects 2 *Stations* in one go. This is the minimum stations that can be connected.
@@ -49,7 +49,7 @@ Connects 2 *Stations* in one go. This is the minimum stations that can be connec
 These two methods will be called by the two *createBridges* methods. The record is needed for the actual searching based on user input.
 
 #### public ArrayList<List\<Station>> processPartialNetwork(boolean verbose)
-Displays all the connections created by the *creteBridges()* methods. This only displays the partial network. There might still be some connections that can be combined into a single connection. See also *displayFullNetwork()*
+Displays all the connections created by the *creteBridges()* methods. This only displays the partial network. There might still be some connections that can be combined into a single connection. See also *processFullNetwork()*
 
 If **verbose** is set to true, it will show all the partial networks that will go throught eh linking process.
   
@@ -63,7 +63,7 @@ If **verbose** is set to true, it will notify that there are 2 partial networks 
 This method will store every path in *_partialNetworks* into a new ArrayList<List<Station>>, any linking partial network will then be processed and added in. This means that there might be some "redundant" partial paths (before linking then together) included which might be useful depending on the use case.
 
 #### private ArrayList<List\<Station>> linkAllConnectingStations(ArrayList<List\<Station>> _partialNetworks, boolean verbose)
-This method combines the partial networks by looping through the ArrayList ONCE only and each *List<Station>* within will be checked against another *List<Station>*. Therefore, only 2 linking partial networks will be combined together each time. If there are more than 2 partial networks that shuold be linked toegther, only the first 2 (that the JVM happen to see) will be processed. This methods returns the same list as the *displayFullNetwork()* method. This method can be called as many times as needed.
+This method combines the partial networks by looping through the ArrayList ONCE only and each *List<Station>* within will be checked against another *List<Station>*. Therefore, only 2 linking partial networks will be combined together each time. If there are more than 2 partial networks that shuold be linked toegther, only the first 2 (that the JVM happen to see) will be processed. This methods returns the same list as the *processFullNetwork()* method. This method can be called as many times as needed.
 
 If **verbose** is set to true, it will show all the paths that meets the requirements ie. paths that include the specified start and destination stations.
 
