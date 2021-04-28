@@ -2,7 +2,8 @@ import java.awt.*;
 
 public class GPS {
 	public static void main (String args[]) {
-		new Screen().renderGraphics(300, 300, 400, 400);
+		// new Screen().renderGraphics(300, 300, 400, 400);
+		
 	}
 }
 

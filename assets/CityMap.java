@@ -4,6 +4,9 @@ public class CityMap {
 	public Map<Station, Map<Station, Station>> cityMap = new HashMap<Station, Map<Station, Station>>();
 	// set max 3 connections in one go :)
 	
+	// for searching the path, this will be initialized in the createBridges() method
+	public Map<String, Station> stationDictionary = new HashMap<String, Station>();
+	
 	public void createBridges(Station s1, Station s2, Station s3) {
 		// cityMap.put(s1, new HashMap<Station, Station>()); // this line is causing the same key's value to be overwritten
 		// there's no autovivification in Java, this is not Perl :^)
@@ -13,6 +16,7 @@ public class CityMap {
 		} else {
 			cityMap.put(s1, new HashMap<Station, Station>() {{ put(s2, s3); }});
 		}
+		updateStationRecord(s1, s2, s3);
 	}
 	
 	public void createBridges(Station s1, Station s2) {
@@ -23,6 +27,18 @@ public class CityMap {
 		} else {
 			cityMap.put(s1, new HashMap<Station, Station>() {{ put(s2, null); }});
 		}
+		updateStationRecord(s1, s2);
+	}
+	
+	private void updateStationRecord(Station s1, Station s2) {
+		stationDictionary.put(s1.name, s1);
+		stationDictionary.put(s2.name, s2);
+	}
+	
+	private void updateStationRecord(Station s1, Station s2, Station s3) {
+		stationDictionary.put(s1.name, s1);
+		stationDictionary.put(s2.name, s2);
+		stationDictionary.put(s3.name, s3);
 	}
 	
 	// this will fail due to Station's connectTo() method, minimum is 2 stations per connection
@@ -33,7 +49,8 @@ public class CityMap {
 	}
 	*/
 	
-	public ArrayList<List<Station>> displayPartialNetwork() {
+	// if verbose, it will show the linking station(the one with stations)
+	public ArrayList<List<Station>> processPartialNetwork(boolean verbose) {
 		// if any error occurs, it means that the stations are not connected correctly
 		// if there is only one station with no connection, it will be ignored, we're using a while loop, that's why we don't need to check
 		// plus, you cannot connect something to nothing :) Up till this point, this shouldn't be the problem
@@ -53,15 +70,21 @@ public class CityMap {
 							
 					if(cityMap.get(station_level_1).get(station_level_2) == null) { 
 						partialNetworks.add( Arrays.asList(station_level_1, station_level_2) ); // collect data
-						System.out.println
-							(station_level_1.name + "--"+ station_level_1.distanceFrom(station_level_2) +"->" + station_level_2.name);
+						if (verbose) {
+							System.out.println
+								(station_level_1.name + "--"+ station_level_1.distanceFrom(station_level_2) +"->" + station_level_2.name);	
+						}
+						
 						continue;
 					} else {
 						Station final_station = cityMap.get(station_level_1).get(station_level_2);
 						partialNetworks.add( Arrays.asList(station_level_1, station_level_2, final_station) ); // collect data
-						System.out.print(station_level_1.name + "--"+ station_level_1.distanceFrom(station_level_2) +"->");
-						System.out.println
-							(station_level_2.name + "--"+ station_level_2.distanceFrom(final_station) +"->" + final_station.name);
+						if (verbose) {
+							System.out.print(station_level_1.name + "--"+ station_level_1.distanceFrom(station_level_2) +"->");
+							System.out.println
+								(station_level_2.name + "--"+ station_level_2.distanceFrom(final_station) +"->" + final_station.name);
+						}
+						
 					}
 					
 				}
@@ -78,29 +101,36 @@ public class CityMap {
 		return partialNetworks;
 	}
 	
-	public void displayFullNetwork(ArrayList<List<Station>> _partialNetworks, int maxLayers) {
+	// returns the full network list
+	// if verbose, it will notify if there is a partial connection that can be connected, and
+	// it will display all the final results
+	public ArrayList<List<Station>> processFullNetwork(ArrayList<List<Station>> _partialNetworks, int maxLayers, boolean verbose) {
 		// System.out.println( _partialNetworks.get(0).toString() ); // will print out all elements.toString()
 		// call linkAllConnectingStations() and print everything out, this is the solution, might need some optimizing though
 		
 		ArrayList<List<Station>> fullNetworkList;
 		if (maxLayers <= 2) {
-			fullNetworkList = linkAllConnectingStations( _partialNetworks );
+			fullNetworkList = linkAllConnectingStations( _partialNetworks, verbose );
 		} else {
 			
 			for (int i=1; i <= maxLayers-1; i++) {
-				_partialNetworks = linkAllConnectingStations( _partialNetworks );
+				_partialNetworks = linkAllConnectingStations( _partialNetworks, verbose );
 			}
 			fullNetworkList = _partialNetworks;
 		}
 		
 		// still need to process the output
-		System.out.println( fullNetworkList ); 
+		if (verbose) {
+			System.out.println( fullNetworkList );
+		}
+		
+		return fullNetworkList;
 		// need to call showSearchPath() for the [optimized] path to use
 		
 	}
 	
 	// this part will only fail if there are no partial connections
-	private ArrayList<List<Station>> linkAllConnectingStations(ArrayList<List<Station>> _partialNetworks) {
+	private ArrayList<List<Station>> linkAllConnectingStations(ArrayList<List<Station>> _partialNetworks, boolean verbose) {
 		ArrayList<List<Station>> _fullNetworkList = new ArrayList<List<Station>>();
 		try {
 			// add all the partial connections into the list too, so that we will have more available connections to look up :)
@@ -129,7 +159,11 @@ public class CityMap {
 					// System.out.println( firstNetworkLastStation.equals( secondNetworkFirstStation ) );
 					// System.out.println( firstNetworkLastStation + "\n" + secondNetworkFirstStation );
 					if (  firstNetworkLastStation.equals( secondNetworkFirstStation )  ) {
-						System.out.println("Found a partial connection and connecting them . . .");
+					
+						if (verbose) {
+							System.out.println("Found a partial connection and connecting them . . .");
+						}
+						
 						List<Station> singleFullPath = new ArrayList<Station>();
 						singleFullPath.addAll(firstSingleNetwork);
 						
@@ -163,65 +197,57 @@ public class CityMap {
 		return _fullNetworkList;
 	}
 	
-	public void showSearchPath(Station start, Station destination) {
-		
-	}
-	
-	public static void main(String args[]) {
-		CityMap mapA = new CityMap();
-		
-		Station company = new Station(5, 5, "C"); // company
-		Station s1 = new Station(5, 5, "S1"); // station
-		Station h1 = new Station(5, 5, "H1"); // houses
-		Station h2 = new Station(5, 5, "H2");
-		Station h3 = new Station(5, 5, "H3");
-		Station h4 = new Station(5, 5, "H4");
-		Station h5 = new Station(5, 5, "H5");
-		Station h6 = new Station(5, 5, "H6"); 
-		Station f1 = new Station(5, 5, "F1"); // factory
-		Station w1 = new Station(5, 5, "W1"); // warehouse
-		Station w2 = new Station(5, 5, "W2"); // warehouse
-		Station a1 = new Station(5, 5, "A1"); // airport
-		Station p1 = new Station(5, 5, "P1"); // port
-		
-		// no connectTo() == error :)
-		/*
-		company.connectTo(s1, 2); s1.connectTo(h4, 1); mapA.createBridges(company, s1, h4);
-												h4.connectTo(h5, 2); mapA.createBridges(h4, h5);
-												h4.connectTo(h6, 4); mapA.createBridges(h4, h6);
-		
-		company.connectTo(h1, 3); mapA.createBridges(company, h1);
-						  h1.connectTo(h2, 3); h2.connectTo(w1, 6); mapA.createBridges(h1, h2, w1);
-						  h1.connectTo(h3, 8); h3.connectTo(f1, 8); mapA.createBridges(h1, h3, f1);
-		*/
-		
-		// the challenging part :)
-		company.connectTo(w2, 4); mapA.createBridges(company, w2);
-						  w2.connectTo(h3, 10); mapA.createBridges(w2, h3);
-						  			   h3.connectTo(w1, 5); mapA.createBridges(h3, w1);
-						  			   h3.connectTo(f1, 9); mapA.createBridges(h3, f1);
-		// house_3.connectTo(house_3, 0);
-		// mapA.createBridges(house_3, house_3); 
-		// this loop needs to be fixed in the future, unless the distance is not 0
-		
-		
-		// or the linkAllConnectingStations() private method can be set to public and called a few times 
-		// and store them into s data file
-		
-		// it won't be in sequence, we're using a HashMap :)
-		ArrayList<List<Station>> partialNetworks =  mapA.displayPartialNetwork();
-		
-		mapA.displayFullNetwork(partialNetworks, 3);
-		
-		// System.out.println(house_1.name + " connected to " + house_3.name + "? " + house_1.isConnectedTo(house_3));
-		// System.out.println(house_3.name + " connected to " + house_1.name + "? " + house_3.isConnectedTo(house_1));
-		
-		// this doesn't do much
-		// if (house_1.isConnectedTo(company) && company.isConnectedTo(house_2) && house_2.isConnectedTo(house_3)) {
-			// house_1.showDetails();
-		// }
-		
-		// System.out.println("asdjodjoi");
+	// the parameters must be string, so that we can get the actual stations from the stationDictionary after the user input
+	// the name will always be unique, sinc eevrything is stored in a HashMap in the very beginning
+	public ArrayList<List<Station>> 
+		showAvailablePaths(String start_name, String destination_name, ArrayList<List<Station>> processedPaths, boolean verbose) {
+			// it is impossible for stationDictionary to contain anything that is not registered! 
+			// if so, then it means there's a programming error :) 
+				// The nullPointerException will only appear when we call the Station's properties
 
+			Station start = stationDictionary.get(start_name);
+			Station destination = stationDictionary.get(destination_name);
+			// catch NullPointerException, which means the programmer set the wrong name in the GUI or something
+			try {
+				String check_name;
+				check_name = start.name;
+				check_name = destination.name;
+			} catch (NullPointerException e) {
+				System.out.println("\nOops! I can't look-up the stations you specified.");
+				System.out.println("->Reason: Programming error. The station name(s) you specified couldn't be found.");
+				System.out.println("-->Verify that the station names '"+ start_name +"' and '"+ destination_name 
+					+"' are correct and that they exist.");
+				System.out.println("   Then, edit them in the GUI input, buttons or something.\n");
+				System.out.println("!! More details over here:");
+				e.printStackTrace(); System.exit(-1);
+			}
+			
+			if (verbose) {
+				System.out.println(start.name + "-->" + destination.name);
+			}
+			
+			ArrayList<List<Station>> validPaths = new ArrayList<List<Station>>();
+			
+			// loop through every path
+			// then check if start & destination is within each row or not
+			Iterator<List<Station>> it = processedPaths.iterator();
+			List<Station> path = null;
+			while (it.hasNext()) {
+				path = it.next();
+				// we might assume that the lowest number of links is actually shorter in the future
+				// we need to make this work first
+				if (path.contains(start) && path.contains(destination)) {
+					validPaths.add(path);
+				}
+			}
+			// error is caught in the front part
+			if (verbose) {
+				System.out.println("All valid paths from " + start.name + " to " + destination.name + ":");
+				System.out.println(validPaths);
+			}
+			
+			return validPaths;
+			// and then it's up to the gps to decide which path to take, the gps will conclude the searching concept (CSP, COP, etc)
 	}
+
 }

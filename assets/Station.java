@@ -59,6 +59,7 @@ public class Station {
 	}
 	
 	// testing purposes, it's up to the city map to do this part
+	/*
 	public static void main(String args[]) {
 		Station company = new Station(5, 5, "Company");
 		Station house_1 = new Station(10, 5, "House 1");
@@ -79,4 +80,5 @@ public class Station {
 		house_2.showDetails();
 		
 	}
+	*/
 }
