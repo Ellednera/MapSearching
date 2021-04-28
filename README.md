@@ -5,8 +5,10 @@ Under assets is the codes for the map
 1. Station.java
 2. CityMap.java (compiling this file will generate more than one class file)
 3. GPS.java (compiling this file will generate another class file "Screen")
+4. TestScript.java
 
 ##### Compile only CityMap.java, the Station class will be compiled together.
+##### Compile and run TestScript.java to see how the program reacts to problematic input. Feel free to edit and add on more testing features to this file (let me know if you want your codes to be included here)
 
 ## Classes & Methods
 ### 1. Station
@@ -29,7 +31,7 @@ This method is called by *showDetails()*
 #### public String toString()
 This method is overridden
 #### public void showDetials()
-Call *toString()* and adds on more details
+Calls *toString()* and adds on more details
 
 
 ### 2. CityMap
@@ -42,22 +44,35 @@ Connects 3 *Station*s in one go. This is the maximum stations that can be connec
 #### public void createBridges(Station s1, Station s2)
 Connects 2 *Stations* in one go. This is the minimum stations that can be connected.
 
-#### public ArrayList<List\<Station>> displayPartialNetwork()
+#### private void updateStationRecord(Station s1, Station s2)
+#### private void updateStationRecord(Station s1, Station s2, Station s3)
+These two methods will be called by the two *createBridges* methods. The record is needed for the actual searching based on user input.
+
+#### public ArrayList<List\<Station>> processPartialNetwork(boolean verbose)
 Displays all the connections created by the *creteBridges()* methods. This only displays the partial network. There might still be some connections that can be combined into a single connection. See also *displayFullNetwork()*
+
+If **verbose** is set to true, it will show all the partial networks that will go throught eh linking process.
   
-#### public void displayFullNetwork(ArrayList<List\<Station>> _partialNetworks, int maxLayers)
+#### public ArrayList<List\<Station>> processFullNetwork(ArrayList<List\<Station>> _partialNetworks, int maxLayers, boolean verbose)
 Display the combined-once partial network. This method calls the private method *linkAllConnectingStations()* to combine the bridges. See *linkAllConnectingStations()* for more details.
 
 *maxLayers* is the number of layers to be proccessed. Draw your map on a piece of papaer first and then determine how many layers it will be :) A branching network will caused an extra layer to exists.
 
+If **verbose** is set to true, it will notify that there are 2 partial networks that can be link for each iteration.
+
 This method will store every path in *_partialNetworks* into a new ArrayList<List<Station>>, any linking partial network will then be processed and added in. This means that there might be some "redundant" partial paths (before linking then together) included which might be useful depending on the use case.
 
-#### private ArrayList<List\<Station>> linkAllConnectingStations(ArrayList<List\<Station>> _partialNetworks)
+#### private ArrayList<List\<Station>> linkAllConnectingStations(ArrayList<List\<Station>> _partialNetworks, boolean verbose)
 This method combines the partial networks by looping through the ArrayList ONCE only and each *List<Station>* within will be checked against another *List<Station>*. Therefore, only 2 linking partial networks will be combined together each time. If there are more than 2 partial networks that shuold be linked toegther, only the first 2 (that the JVM happen to see) will be processed. This methods returns the same list as the *displayFullNetwork()* method. This method can be called as many times as needed.
-  
-#### public void showSearchPath(Station start, Station destination)
-(*Unimplemented*) Displays the path of the starting location to the destination.
 
+If **verbose** is set to true, it will show all the paths that meets the requirements ie. paths that include the specified start and destination stations.
+
+*This method should be optimized further in the future (The starting station should be in the first record while the destination station should be in the last record and not somewhere in the middle due to some simple geometry concepts)
+
+#### public ArrayList<List\<Station>> showAvailablePaths(String start_name, String destination_name, ArrayList<List\<Station>> processedPaths, boolean verbose) 
+Process the available paths for the specified starting and destination stations.
+
+If **verbose** is set to true, it will display all the available paths. This output is only good for debugging. If you need to generate a nicer display, just override the Station.toString() method or manually change the display in this method.
 
 ### 3. GPS
 Just compile and run this script :)
@@ -77,3 +92,14 @@ w & h are the width and height of the screen
 
 #### public void paint(Graphics g)
 Overriden to draw some circles at random location on the screen.
+
+### 5. TestScript.java
+This is the general script for testing the other classes. This progra includes several testing features so that the user/programmer doesn't need to manually write codes to perform tests.
+
+All you need to do is just edit, compile and run this file and add on stuff if you want to.
+
+#### private static void test_stationDictionary(CityMap map, String lookup_name)
+#### private static void test_stationDictionary(CityMap map, String[] lookup_names)
+Checks if the specified *Station* name is valid or not. If the name is not valid, it will display "null". The output is pretty self-explanatory :)
+
+These 2 methods can be written in a mre efficient way by directly accessing the *CityMap* object's _stationDictionary_ static HashMap<String, Station> variable.
