@@ -1,0 +1,6 @@
+**NOTES for JADE-Cars**
+
+*30 APRIL 2021*
+1. Shove the gps search output into MaserRoutingAgent line 121 (under DeliverMsg::handleAgree) and see if it works or not
+   - There's another handleAgree() somewhere at line 65
+2. Add the map initialisation etc in MasterRoutingAgent::setup
