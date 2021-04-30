@@ -8,7 +8,7 @@ Under assets is the codes for the map
 4. TestScript.java - can be run
 
 - Compile only CityMap.java, the Station class will be compiled together.
-- Compile and run TestScript.java to see how the program reacts to problematic input (Usually it's programming errors). Feel free to edit and add on more features to this file (let me know if you want your codes to be included here)
+- Compile and run TestScript.java to see how the program reacts to problematic input (Usually it's programming errors). Feel free to edit and add on more features to this file
 
 ## Classes & Methods
 ### 1. Station
