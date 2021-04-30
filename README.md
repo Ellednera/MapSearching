@@ -36,7 +36,7 @@ Calls *toString()* and adds on more details
 
 ### 2. CityMap
 #### CityMap()
-The default constructor
+The default constructor. This will set and connect all the Stations. This constructor **MUST** be called if you're using the *GPS*. You can still add on connections if you want to :)
 
 #### public void createBridges(Station s1, Station s2, Station s3)
 Connects 3 *Station*s in one go. This is the maximum stations that can be connected **through this method**. See *processFullNetwork()* method to link more than 3 *Station*s.
@@ -77,6 +77,11 @@ If **verbose** is set to true, it will display all the available paths. This out
 ### 3. GPS
 Just compile and run this script :)
 
+#### private static Station[] findChosenPath(ArrayList<java.util.List\<Station>> paths_2_filter) 
+This is the last processing step. This will chose the shortest path for the Delivery Agent.
+
+*Search includes COP currently, CSP will be added in the future
+
 ### 4. Screen
 This class extends the **Frame** class and is used by **GPS**.
 Currently, everything is hard-coded and this class is put in the same source file as GPS.java :)
@@ -94,7 +99,8 @@ w & h are the width and height of the screen
 Overriden to draw some circles at random location on the screen.
 
 ### 5. TestScript.java
-This is the general script for testing the other classes. This progra includes several testing features so that the user/programmer doesn't need to manually write codes to perform tests.
+This is the general script for testing the other classes. This program includes several testing features so that the user/programmer doesn't need to manually write codes to perform tests.
+Some useful codes are also included here.
 
 All you need to do is just edit, compile and run this file and add on stuff if you want to.
 
