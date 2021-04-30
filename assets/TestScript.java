@@ -3,6 +3,14 @@ import java.util.*;
 public class TestScript {
 
 	public static void main(String args[]) {
+	
+	/*
+		int numbers[] = new int[5];
+		numbers[1] = 5;
+		System.out.println(numbers);
+	*/
+	
+	// this whole part is the map's initialization process
 		CityMap mapA = new CityMap();
 		
 		Station company = new Station(5, 5, "C"); // company
