@@ -75,12 +75,21 @@ Process the available paths for the specified starting and destination stations.
 If **verbose** is set to true, it will display all the available paths. This output is only good for debugging. If you need to generate a nicer display, just override the Station.toString() method or manually change the display in this method.
 
 ### 3. GPS
-Just compile and run this script :)
+Just compile and run this script, and a gui will appear :)
 
-#### private static Station[] findChosenPath(ArrayList<java.util.List\<Station>> paths_2_filter) 
+#### private static Station[] findChosenPath(ArrayList<java.util.List\<Station>> paths_2_filter, String check_start_name, String check_destination_name)
 This is the last processing step. This will chose the shortest path for the Delivery Agent.
 
 *Search includes COP currently, CSP will be added in the future
+
+#### private static Station[] schwartzianTransform(ArrayList<java.util.List\<Station>> paths_2_filter)
+Schwartzian transformation used by *findChosenPath* method
+
+#### private static Station[] correctedDirection(Station[] shortestPath, String check_start_name, String check_destination_name)
+This method tries to correct the direction of the chosen path if the filtered path is not in the correct order. It's either in the correct order of the other way round.
+
+#### public static void drawMap(Station[] stations)
+Draws all the connected stations and the details on the screen. Uncomment the commented connections in CityMap's constructor to see more stations appear.
 
 ### 4. Screen
 This class extends the **Frame** class and is used by **GPS**.
@@ -88,15 +97,22 @@ Currently, everything is hard-coded and this class is put in the same source fil
 
 **THIS CLASS SHOULD ONLY BE CALLED INSIDE OF GPS AND NOWHERE ELSE**
 #### Screen ()
-This will automatically set the window with dimension of 400px by 400px.
+This sets the title/name of the program
+
+#### public void sendStationList(Iterator\<Station> stations_it)
+Takes in the iterator of all the values of CityMap's stationDictionary variable.
 
 #### public void renderGraphics(int x, int y, int w, int h) 
 (Under development) Renders the display. Some circles will be displayed.
+
+
 x & y are the location of where the window should display
+
+
 w & h are the width and height of the screen
 
 #### public void paint(Graphics g)
-Overriden to draw some circles at random location on the screen.
+Overriden. Currently, it can draw the stations and the connecting lines as well as the name of the stations.
 
 ### 5. TestScript.java
 This is the general script for testing the other classes. This program includes several testing features so that the user/programmer doesn't need to manually write codes to perform tests.
