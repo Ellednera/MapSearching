@@ -9,22 +9,23 @@ public class CityMap {
 	
 	// constructor - directly initialize the map
 	CityMap() {
-		Station company = new Station(5, 5, "C"); // company
-		Station s1 = new Station(5, 5, "S1"); // station
-		Station h1 = new Station(5, 5, "H1"); // houses
-		Station h2 = new Station(5, 5, "H2");
-		Station h3 = new Station(5, 5, "H3");
-		Station h4 = new Station(5, 5, "H4");
-		Station h5 = new Station(5, 5, "H5");
-		Station h6 = new Station(5, 5, "H6"); 
-		Station f1 = new Station(5, 5, "F1"); // factory
-		Station w1 = new Station(5, 5, "W1"); // warehouse
-		Station w2 = new Station(5, 5, "W2"); // warehouse
-		Station a1 = new Station(5, 5, "A1"); // airport
-		Station p1 = new Station(5, 5, "P1"); // port
+		Station company = new Station(275, 250, "C"); // company
+		Station s1 = new Station(350, 190, "S1"); // station
+		Station h1 = new Station(150, 150, "H1"); // houses
+		Station h2 = new Station(50, 50, "H2");
+		Station h3 = new Station(50, 160, "H3");
+		Station h4 = new Station(335, 100, "H4");
+		Station h5 = new Station(250, 50, "H5");
+		Station h6 = new Station(375, 50, "H6"); 
+		Station f1 = new Station(0, 110, "F1"); // factory
+		Station w1 = new Station(0, 75, "W1"); // warehouse
+		Station w2 = new Station(350, 350, "W2"); // warehouse
+		Station a1 = new Station(480, 440, "A1"); // airport
+		Station p1 = new Station(410, 50, "P1"); // port
 		
 		
 		// assume that all connections are bi-directional
+		// uncomment the following to see them appear in the gps screen :)
 		/*
 		company.connectTo(s1, 2); s1.connectTo(h4, 1); createBridges(company, s1, h4);
 												h4.connectTo(h5, 2); createBridges(h4, h5);
@@ -177,7 +178,7 @@ public class CityMap {
 				List<Station> firstSingleNetwork = _partialNetworks.get(i);
 				Station firstNetworkLastStation = firstSingleNetwork.get( firstSingleNetwork.size()-1 );
 				
-				// add every partial network by default :)
+				// add every original partial network by default :)
 				_fullNetworkList.add( firstSingleNetwork );
 				
 				// loop through the rest of the paths
@@ -233,7 +234,7 @@ public class CityMap {
 	}
 	
 	// the parameters must be string, so that we can get the actual stations from the stationDictionary after the user input
-	// the name will always be unique, sinc eevrything is stored in a HashMap in the very beginning
+	// the name will always be unique, since everything is stored in a HashMap in the very beginning
 	public ArrayList<List<Station>> 
 		showAvailablePaths(String start_name, String destination_name, ArrayList<List<Station>> processedPaths, boolean verbose) {
 			// it is impossible for stationDictionary to contain anything that is not registered! 
@@ -275,6 +276,7 @@ public class CityMap {
 					validPaths.add(path);
 				}
 			}
+			
 			// error is caught in the front part
 			if (verbose) {
 				System.out.println("All valid paths from " + start.name + " to " + destination.name + ":");

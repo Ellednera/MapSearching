@@ -13,37 +13,6 @@ public class TestScript {
 	// this whole part is the map's initialization process
 		CityMap mapA = new CityMap();
 		
-		Station company = new Station(5, 5, "C"); // company
-		Station s1 = new Station(5, 5, "S1"); // station
-		Station h1 = new Station(5, 5, "H1"); // houses
-		Station h2 = new Station(5, 5, "H2");
-		Station h3 = new Station(5, 5, "H3");
-		Station h4 = new Station(5, 5, "H4");
-		Station h5 = new Station(5, 5, "H5");
-		Station h6 = new Station(5, 5, "H6"); 
-		Station f1 = new Station(5, 5, "F1"); // factory
-		Station w1 = new Station(5, 5, "W1"); // warehouse
-		Station w2 = new Station(5, 5, "W2"); // warehouse
-		Station a1 = new Station(5, 5, "A1"); // airport
-		Station p1 = new Station(5, 5, "P1"); // port
-		
-		// no connectTo() == error :)
-		/*
-		// assume that all connections are bi-directional
-		company.connectTo(s1, 2); s1.connectTo(h4, 1); mapA.createBridges(company, s1, h4);
-												h4.connectTo(h5, 2); mapA.createBridges(h4, h5);
-												h4.connectTo(h6, 4); mapA.createBridges(h4, h6);
-		
-		company.connectTo(h1, 3); mapA.createBridges(company, h1);
-						  h1.connectTo(h2, 3); h2.connectTo(w1, 6); mapA.createBridges(h1, h2, w1);
-						  h1.connectTo(h3, 8); h3.connectTo(f1, 8); mapA.createBridges(h1, h3, f1);
-		*/
-		
-		// the challenging part :)
-		company.connectTo(w2, 4); mapA.createBridges(company, w2);
-						  w2.connectTo(h3, 10); mapA.createBridges(w2, h3);
-						  			   h3.connectTo(w1, 5); mapA.createBridges(h3, w1);
-						  			   h3.connectTo(f1, 9); mapA.createBridges(h3, f1);
 		// house_3.connectTo(house_3, 0);
 		// mapA.createBridges(house_3, house_3); 
 		// this loop needs to be fixed in the future, unless the distance is not 0
@@ -73,7 +42,7 @@ public class TestScript {
 		mapA.showAvailablePaths("C", "H3", fullPaths, true);
 		
 		// tests
-		String[] station_names = {"Company", "H1", "W1", "A1", "C", "Company"};
+		String[] station_names = {"Company", "H1", "W1", "A1", "C", "Company"}; // use stationDictionary
 		test_stationDictionary(mapA, "Company");
 		test_stationDictionary(mapA, "H3");
 		test_stationDictionary(mapA, station_names);
