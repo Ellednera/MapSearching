@@ -3,6 +3,7 @@
   1. GPS::correctedDirection
   2. GPS::schwartzianTransform
 - Added a route direction checking feature (only applicable for GPS::findChosenPath) due to the way paths are filtered
+- The GPS screen is finally displaying the stations and the roads
 
 
 29 APRIL 2021
