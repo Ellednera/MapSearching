@@ -4,7 +4,7 @@
   2. GPS::schwartzianTransform
 - Added a route direction checking feature (only applicable for GPS::findChosenPath) due to the way paths are filtered
 - The GPS screen is finally displaying the stations and the roads
-- Coordinates of Stations were changed to some values that makes sense :)
+- Coordinates of Stations in CityMap were changed to some values that makes sense :)
 
 
 29 APRIL 2021
