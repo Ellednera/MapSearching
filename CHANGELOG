@@ -6,6 +6,7 @@
 - Solved the problem with screen going blank after reopening the minimized gui window(if it appears blank, click the screen)
 - Moved the Screen class into another file, Eclipse was complaining about that :)
   - Added MouseListener and MouseAdapter to Screen
+- Screen::sendStationList was redefined as Screen::sendMap()
 - Successfully intergrated CityMap and GPS into MasterRoutingAgent
 
 1 MAY 2021
