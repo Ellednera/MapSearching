@@ -7,7 +7,7 @@
 - Moved the Screen class into another file, Eclipse was complaining about that :)
   - Added MouseListener and MouseAdapter to Screen
 - Screen::sendStationList was redefined as Screen::sendMap()
-- Successfully intergrated CityMap and GPS into MasterRoutingAgent
+- Successfully intergrated CityMap and GPS into MasterRoutingAgent in setup()
 
 1 MAY 2021
 - Refactored the codes in GPS::findChosenPath with the following sub-methods:
