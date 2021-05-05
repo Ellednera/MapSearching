@@ -1,5 +1,5 @@
 # JADE-Cars MapSearching
-Codes and assets for search algorithms. The codes here are meant to suite the project. For the stand-alone codes, see (MapSearching)[https://github.com/Ellednera/MapSearching]
+Codes and assets for search algorithms. The codes here are meant to suite the project. For the stand-alone codes, see [MapSearching](https://github.com/Ellednera/MapSearching)
 
 Structure for the codes:
  - ./assets/Station.java
