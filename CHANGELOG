@@ -1,3 +1,13 @@
+5 MAY 2021
+- This was forked into JADE-Cars as some codes in the original MapSearching has been edited to suite the whole project in Eclipse
+- On packaging the codes:
+  1. Station, CityMap, GPS and Screen were packaged under "assets" namespace.
+  2. TestScript.java was left out to be the general script to run and test all the assets
+- Solved the problem with screen going blank after reopening the minimized gui window(if it appears blank, click the screen)
+- Moved the Screen class into another file, Eclipse was complaining about that :)
+  - Added MouseListener and MouseAdapter to Screen
+- Successfully intergrated CityMap and GPS into MasterRoutingAgent
+
 1 MAY 2021
 - Refactored the codes in GPS::findChosenPath with the following sub-methods:
   1. GPS::correctedDirection
