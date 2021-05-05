@@ -1,11 +1,11 @@
 # MapSearching
 Codes and assets for search algorithms
 
-Tree structure for the algorithm:
-./assets/Station.java
-./assets/CityMap.java
-./assets/GPS.java
-./TestScript.java - can be run
+Structure for the codes:
+ - ./assets/Station.java
+ - ./assets/CityMap.java
+ - ./assets/GPS.java
+ - ./TestScript.java - can be run
 
 ## Classes & Methods
 ### 1. assets::Station
