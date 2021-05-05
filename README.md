@@ -1,17 +1,14 @@
 # MapSearching
 Codes and assets for search algorithms
 
-Under assets is the codes for the map
-1. Station.java
-2. CityMap.java (compiling this file will generate more than one class file)
-3. GPS.java (compiling this file will generate another class file "Screen") - can be run
-4. TestScript.java - can be run
-
-- Compile only CityMap.java, the Station class will be compiled together.
-- Compile and run TestScript.java to see how the program reacts to problematic input (Usually it's programming errors). Feel free to edit and add on more features to this file
+Tree structure for the algorithm:
+./assets/Station.java
+./assets/CityMap.java
+./assets/GPS.java
+./TestScript.java - can be run
 
 ## Classes & Methods
-### 1. Station
+### 1. assets::Station
 #### Station(int x, int y, String name)
 This is the only constructor
 #### public void connectTo(Station s, int distance)
@@ -34,8 +31,8 @@ This method is overridden
 Calls *toString()* and adds on more details
 
 
-### 2. CityMap
-#### CityMap()
+### 2. assets::CityMap
+#### public CityMap()
 The default constructor. This will set and connect all the Stations. This constructor **MUST** be called if you're using the *GPS*. You can still add on connections if you want to :)
 
 #### public void createBridges(Station s1, Station s2, Station s3)
@@ -74,7 +71,7 @@ Process the available paths for the specified starting and destination stations.
 
 If **verbose** is set to true, it will display all the available paths. This output is only good for debugging. If you need to generate a nicer display, just override the Station.toString() method or manually change the display in this method.
 
-### 3. GPS
+### 3. assets::GPS
 Just compile and run this script, and a gui will appear :)
 
 #### private static Station[] findChosenPath(ArrayList<java.util.List\<Station>> paths_2_filter, String check_start_name, String check_destination_name)
@@ -91,16 +88,18 @@ This method tries to correct the direction of the chosen path if the filtered pa
 #### public static void drawMap(Station[] stations)
 Draws all the connected stations and the details on the screen. Uncomment the commented connections in CityMap's constructor to see more stations appear.
 
-### 4. Screen
+### 4. assets::Screen
 This class extends the **Frame** class and is used by **GPS**.
-Currently, everything is hard-coded and this class is put in the same source file as GPS.java :)
+This class should be made into a local variable inside assets::GPS, but anyway
 
-**THIS CLASS SHOULD ONLY BE CALLED INSIDE OF GPS AND NOWHERE ELSE**
-#### Screen ()
-This sets the title/name of the program
-
-#### public void sendStationList(Iterator\<Station> stations_it)
-Takes in the iterator of all the values of CityMap's stationDictionary variable.
+#### public Screen ()
+This sets the title/name of the program and overrides the following listeners:
+ - mousePressed(MouseEvent e)
+   - to cause the map to be redrawn if the gui window is minimized and open again
+   - sendMap() and repaint() is called here
+ 
+#### public void sendMap(CityMap map)
+This method will process the iterator of all the values of CityMap's stationDictionary variable and pass the whole map to the class for repainting the screen
 
 #### public void renderGraphics(int x, int y, int w, int h) 
 (Under development) Renders the display. Some circles will be displayed.
@@ -111,8 +110,10 @@ x & y are the location of where the window should display
 
 w & h are the width and height of the screen
 
+
+
 #### public void paint(Graphics g)
-Overriden. Currently, it can draw the stations and the connecting lines as well as the name of the stations.
+Overriden to can draw the stations and the connecting lines as well as the name of the stations.
 
 ### 5. TestScript.java
 This is the general script for testing the other classes. This program includes several testing features so that the user/programmer doesn't need to manually write codes to perform tests.
@@ -124,4 +125,4 @@ All you need to do is just edit, compile and run this file and add on stuff if y
 #### private static void test_stationDictionary(CityMap map, String[] lookup_names)
 Checks if the specified *Station* name is valid or not. If the name is not valid, it will display "null". The output is pretty self-explanatory :)
 
-These 2 methods can be written in a mre efficient way by directly accessing the *CityMap* object's _stationDictionary_ static HashMap<String, Station> variable.
+These 2 methods can be written in a more efficient way by directly accessing the *CityMap* object's _stationDictionary_ static HashMap<String, Station> variable.
