@@ -1,3 +1,5 @@
+package assets;
+
 import java.util.*;
 
 public class CityMap {
@@ -8,7 +10,7 @@ public class CityMap {
 	public Map<String, Station> stationDictionary = new HashMap<String, Station>();
 	
 	// constructor - directly initialize the map
-	CityMap() {
+	public CityMap() {
 		Station company = new Station(275, 250, "C"); // company
 		Station s1 = new Station(350, 190, "S1"); // station
 		Station h1 = new Station(150, 150, "H1"); // houses
@@ -26,7 +28,7 @@ public class CityMap {
 		
 		// assume that all connections are bi-directional
 		// uncomment the following to see them appear in the gps screen :)
-		/*
+		
 		company.connectTo(s1, 2); s1.connectTo(h4, 1); createBridges(company, s1, h4);
 												h4.connectTo(h5, 2); createBridges(h4, h5);
 												h4.connectTo(h6, 4); createBridges(h4, h6);
@@ -34,7 +36,7 @@ public class CityMap {
 		company.connectTo(h1, 3); createBridges(company, h1);
 						  h1.connectTo(h2, 3); h2.connectTo(w1, 6); createBridges(h1, h2, w1);
 						  h1.connectTo(h3, 8); h3.connectTo(f1, 8); createBridges(h1, h3, f1);
-		*/
+		
 		
 		// the challenging part :)
 		company.connectTo(w2, 4); createBridges(company, w2);
@@ -43,7 +45,7 @@ public class CityMap {
 						  			   h3.connectTo(f1, 9); createBridges(h3, f1);
 	}
 	
-	public void createBridges(Station s1, Station s2, Station s3) {
+	public void createBridges(Station s1, final Station s2, final Station s3) {
 		// cityMap.put(s1, new HashMap<Station, Station>()); // this line is causing the same key's value to be overwritten
 		// there's no autovivification in Java, this is not Perl :^)
 		// cityMap.get(s1).put(s2, s3);
@@ -55,7 +57,7 @@ public class CityMap {
 		updateStationRecord(s1, s2, s3);
 	}
 	
-	public void createBridges(Station s1, Station s2) {
+	public void createBridges(Station s1, final Station s2) {
 		// cityMap.put(s1, new HashMap<Station, Station>());
 		
 		if (cityMap.containsKey(s1)) {
