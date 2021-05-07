@@ -5,7 +5,7 @@ Structure for the codes:
  - ./assets/Station.java
  - ./assets/CityMap.java
  - ./assets/GPS.java
- - ./TestScript.java - can be run
+ - ./TestScript.java - can be run independently, this is used to test the GUI
 
 ## Classes & Methods
 ### 1. assets::Station
