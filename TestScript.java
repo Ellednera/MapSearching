@@ -14,7 +14,7 @@ public class TestScript {
 		ArrayList<java.util.List<Station>> partialNetworks =  mapA.processPartialNetwork(true);
 		ArrayList<java.util.List<Station>> fullPaths = mapA.processFullNetwork(partialNetworks, 3, false);
 		
-		ArrayList<java.util.List<Station>> availablePaths = mapA.showAvailablePaths("W1", "W2", fullPaths, false);
+		ArrayList<java.util.List<Station>> availablePaths = mapA.showAvailablePaths("C", "W1", fullPaths, true, 3, true);
 		// W2 -> W1 successful, both partial netowrks have only 2 stations each, that's why it works
 		// for a long list of stations, trimming might be needed
 		
@@ -22,7 +22,7 @@ public class TestScript {
 		// findChosenPath(availablePaths);
 		// toArray(<T>[] a) a is a new T[], if not it won't work
 		
-		Station[] chosenPath = gps.findChosenPath(availablePaths, "W1", "W2");
+		Station[] chosenPath = gps.findChosenPath(availablePaths, "C", "W1");
 		System.out.println("The shortest path(according to sequence):");
 		//System.out.println(chosenPath); // this is only a reference, because it's retruned from an array
 		for (int i=0; i<chosenPath.length; i++) {
