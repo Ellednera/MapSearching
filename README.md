@@ -26,7 +26,7 @@ Returns the whole list of connections from this station to all other stations, i
 
 This method is called by *showDetails()*
 #### public String toString()
-This method is overridden
+This method is overridden to return a string that resembles the Cartesian coordinates as much as possible for readability
 #### public void showDetials()
 Calls *toString()* and adds on more details
 
@@ -66,10 +66,12 @@ If **verbose** is set to true, it will show all the paths that meets the require
 
 *This method should be optimized further in the future (The starting station should be in the first record while the destination station should be in the last record and not somewhere in the middle due to some simple geometry concepts)
 
-#### public ArrayList<List\<Station>> showAvailablePaths(String start_name, String destination_name, ArrayList<List\<Station>> processedPaths, boolean verbose) 
-Process the available paths for the specified starting and destination stations.
+#### public ArrayList<List\<Station>> showAvailablePaths(String start_name, String destination_name, ArrayList<List\<Station>> processedPaths, boolean verbose, int capacity, boolean analyseCapacity)
+Process the available paths for the specified starting and destination stations. If the number of stations exceed the *capacity*, it will be ignored. 
 
 If **verbose** is set to true, it will display all the available paths. This output is only good for debugging. If you need to generate a nicer display, just override the Station.toString() method or manually change the display in this method.
+
+Setting **analyseCapacity** to true will give details about the ignored paths.
 
 ### 3. assets::GPS
 Just compile and run this script, and a gui will appear :)
