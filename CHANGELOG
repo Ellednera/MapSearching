@@ -1,3 +1,9 @@
+7 MAY 2021
+- CityMap::showAvailablePaths now supports checking against capacity
+- Changed Station::toString's return value to resemble the Cartesian coordinates
+- Some more stations were connected in the map by default
+- Screen now displays the distance between stations
+
 5 MAY 2021
 - This was forked into JADE-Cars as some codes in the original MapSearching has been edited to suite the whole project in Eclipse
 - On packaging the codes:
