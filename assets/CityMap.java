@@ -28,7 +28,7 @@ public class CityMap {
 		
 		// assume that all connections are bi-directional
 		// uncomment the following to see them appear in the gps screen :)
-		
+		/*
 		company.connectTo(s1, 2); s1.connectTo(h4, 1); createBridges(company, s1, h4);
 												h4.connectTo(h5, 2); createBridges(h4, h5);
 												h4.connectTo(h6, 4); createBridges(h4, h6);
@@ -36,13 +36,17 @@ public class CityMap {
 		company.connectTo(h1, 3); createBridges(company, h1);
 						  h1.connectTo(h2, 3); h2.connectTo(w1, 6); createBridges(h1, h2, w1);
 						  h1.connectTo(h3, 8); h3.connectTo(f1, 8); createBridges(h1, h3, f1);
-		
+		*/
 		
 		// the challenging part :)
 		company.connectTo(w2, 4); createBridges(company, w2);
 						  w2.connectTo(h3, 10); createBridges(w2, h3);
 						  			   h3.connectTo(w1, 5); createBridges(h3, w1);
 						  			   h3.connectTo(f1, 9); createBridges(h3, f1);
+		// for testing purposes
+		company.connectTo(w1, 11); createBridges(company, w1);
+		company.connectTo(h3, 4); createBridges(company, h3);
+						  h3.connectTo(w1, 9);
 	}
 	
 	public void createBridges(Station s1, final Station s2, final Station s3) {
@@ -238,7 +242,7 @@ public class CityMap {
 	// the parameters must be string, so that we can get the actual stations from the stationDictionary after the user input
 	// the name will always be unique, since everything is stored in a HashMap in the very beginning
 	public ArrayList<List<Station>> 
-		showAvailablePaths(String start_name, String destination_name, ArrayList<List<Station>> processedPaths, boolean verbose) {
+		showAvailablePaths(String start_name, String destination_name, ArrayList<List<Station>> processedPaths, boolean verbose, int capacity, boolean analyseCapacity) {
 			// it is impossible for stationDictionary to contain anything that is not registered! 
 			// if so, then it means there's a programming error :) 
 				// The nullPointerException will only appear when we call the Station's properties
@@ -272,6 +276,16 @@ public class CityMap {
 			List<Station> path = null;
 			while (it.hasNext()) {
 				path = it.next();
+				
+				// check against capacity
+				if (path.size() > capacity) {
+					if (analyseCapacity) {
+						System.out.println("Ignoring path " + path);
+						System.out.println("  Total stations: "+ path.size() + ", Capacity: " + capacity);
+					}
+					continue;
+				}
+				
 				// we might assume that the lowest number of links is actually shorter in the future
 				// we need to make this work first
 				if (path.contains(start) && path.contains(destination)) {

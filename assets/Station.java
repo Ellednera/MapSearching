@@ -40,7 +40,8 @@ public class Station {
 	
 	// override toString(), might be useful
 	public String toString() {
-		return "This is " + name + " at (" + x + "," + y + ")";
+		// return "This is " + name + " at (" + x + "," + y + ")";
+		return name + "("+ x +","+ y +")";
 	}
 	
 	public void showDetails() {

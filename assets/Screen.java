@@ -5,7 +5,7 @@ import java.awt.event.*;
 import java.util.*;
 
 public class Screen extends Frame {
-	private Station dummy = new Station(300, 300, "Dummy");
+	//private Station dummy = new Station(300, 300, "Dummy");
 	private Iterator<Station> stations_it = null;
 	private CityMap localMap = null;
 	
@@ -58,6 +58,13 @@ public class Screen extends Frame {
 		setBackground(Color.PINK);
 		setLayout(new GridLayout(2, 1));
 
+		/*
+		Panel menu = new Panel();
+		menu.setBackground(Color.BLUE);
+		add(menu);
+		pack();
+		*/
+		
 		setVisible(true);
 	}
 	
@@ -77,12 +84,17 @@ public class Screen extends Frame {
 			g.drawString(station.name, station.x + 20, station.y + 10);
 			
 			// draw roads
-			g.setColor(Color.WHITE);
 			Iterator<Station> connected_it  = station.allConnections().keySet().iterator();
 			while (connected_it.hasNext()) {
 				Station connectedStation = connected_it.next();
+				
+				g.setColor(Color.WHITE);
 				g.drawLine(station.x + stationRadius, station.y +stationRadius, 	
 							connectedStation.x +stationRadius , connectedStation.y +stationRadius);
+				
+				g.setColor(Color.MAGENTA);
+				g.drawString(String.valueOf(station.distanceFrom(connectedStation)), 
+						(station.x + connectedStation.x)/2, (station.y + connectedStation.y)/2);
 			}
 		}
 		
