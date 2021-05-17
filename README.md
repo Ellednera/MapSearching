@@ -37,18 +37,11 @@ The default constructor. This will set and connect all the Stations. You can als
 
 The number of layers by default is now 5 instaed of 3
 
-
-~~#### public void createBridges(Station s1, Station s2, Station s3)
-Connects 3 *Station*s in one go. This is the maximum stations that can be connected **through this method**. See *processFullNetwork()* method to link more than 3 *Station*s.
-~~
-Connecting 3 stations in one go is no longer available
-
 #### public void createBridges(Station s1, Station s2)
 Connects 2 *Stations* in one go. This is the minimum stations that can be connected.
 
 #### private void updateStationRecord(Station s1, Station s2)
-~~#### private void updateStationRecord(Station s1, Station s2, Station s3)~~
-These two methods will be called by the two *createBridges* methods. The record is needed for the actual searching based on user input.
+This method will be called by the *createBridges* method. The record is needed for the actual searching based on user input.
 
 #### public ArrayList<List\<Station>> processPartialNetwork(boolean verbose)
 Displays all the connections created by the *creteBridges()* methods. This only displays the partial network. There might still be some connections that can be combined into a single connection. See also *processFullNetwork()*
@@ -79,8 +72,6 @@ If **verbose** is set to true, it will display all the available paths. This out
 Setting **analyseCapacity** to true will give details about the ignored paths.
 
 ### 3. assets::GPS
-Just compile and run this script, and a gui will appear :)
-
 #### public Station[] findChosenPath(ArrayList<java.util.List<Station>> paths_2_filter, String check_start_name, String check_destination_name)
 This is the last processing step. This will chose the shortest path for the Delivery Agent. This only checks for the starting and destination stations.
 
@@ -103,7 +94,7 @@ This method tries to correct the direction of the chosen path if the filtered pa
 Draws all the connected stations and the details on the screen. Uncomment the commented connections in CityMap's constructor to see more stations appear.
 
 ### 4. assets::Screen
-This class extends the **Frame** class and is used by **GPS**.
+This class extends the **Frame** class and is used by **GPS**. The graphics is generated using java.awt.
 This class should be made into a local variable inside assets::GPS, but anyway
 
 #### public Screen ()
@@ -147,6 +138,8 @@ Overriden to can draw the stations and the connecting lines as well as the name 
 ### 5. TestScript.java
 This is the general script for testing the other classes. This program includes several testing features so that the user/programmer doesn't need to manually write codes to perform tests.
 Some useful codes are also included here.
+
+The main part includes the codes to use all the assets as well as displaying the graphics. For the algorithm part, just copy and past the codes indicated with **// COP** and **// CSP**
 
 All you need to do is just edit, compile and run this file and add on stuff if you want to.
 
