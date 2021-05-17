@@ -5,12 +5,11 @@ import java.util.*;
 public class TestScript {
 
 	public static void main (String args[]) {
-		// new Screen().renderGraphics(300, 300, 400, 400);
-		// everything is based on TestScript.java
+		
+		// Set up the map and gps
 		CityMap mapA = new CityMap();
 		GPS gps = new GPS();
-		// List in java.util and java.awt confilcts
-		// we might deal with this later as java.awt.List might not be used
+		// List in java.util and java.awt conflicts
 		ArrayList<java.util.List<Station>> partialNetworks =  mapA.processPartialNetwork(true);
 		ArrayList<java.util.List<Station>> fullPaths = mapA.processFullNetwork(partialNetworks, 5, false);
 		
@@ -29,11 +28,11 @@ public class TestScript {
 		//stationNames.add( mapA.stationDictionary.get("C") );
 		
 		ArrayList<java.util.List<Station>> availablePaths;
-		
-		availablePaths = mapA.showAvailablePaths("C", "F1", fullPaths, false, 10, false);
-		
-		Station[] chosenPath_CSP = gps.findChosenPath(availablePaths, stationNames, 10);
+
 		// CSP
+		availablePaths = mapA.showAvailablePaths("C", "F1", fullPaths, false, 10, false);
+		Station[] chosenPath_CSP = gps.findChosenPath(availablePaths, stationNames, 10);
+
 		if (chosenPath_CSP != null) {
 			System.out.println("Showing the path to use (CSP)...");
 			for (int i=0; i <= chosenPath_CSP.length - 1; i++) {
@@ -47,8 +46,8 @@ public class TestScript {
 		
 		// COP
 		availablePaths = mapA.showAvailablePaths("C", "W1", fullPaths, false, 10, false);
-		
 		Station[] chosenPath_COP = gps.findChosenPath(availablePaths, "C", "W1");
+		
 		System.out.println("Showing the shortest path(COP):");
 		for (int i=0; i<chosenPath_COP.length; i++) {
 			System.out.print(chosenPath_COP[i].name);
