@@ -11,36 +11,40 @@ public class CityMap {
 	
 	// constructor - directly initialize the map
 	public CityMap() {
-		Station company = new Station(275, 250, "C"); // company
-		Station s1 = new Station(350, 190, "S1"); // station
+		Station company = new Station(255, 230, "C"); // company
+		Station s1 = new Station(320, 165, "S1"); // station
 		Station h1 = new Station(150, 150, "H1"); // houses
 		Station h2 = new Station(50, 50, "H2");
-		Station h3 = new Station(50, 160, "H3");
+		Station h3 = new Station(70, 160, "H3");
 		Station h4 = new Station(335, 100, "H4");
 		Station h5 = new Station(250, 50, "H5");
-		Station h6 = new Station(375, 50, "H6"); 
-		Station f1 = new Station(0, 110, "F1"); // factory
-		Station w1 = new Station(0, 75, "W1"); // warehouse
+		Station h6 = new Station(430, 220, "H6"); 
+		Station f1 = new Station(190, 45, "F1"); // factory
+		Station w1 = new Station(0, 325, "W1"); // warehouse
 		Station w2 = new Station(350, 350, "W2"); // warehouse
-		Station a1 = new Station(480, 440, "A1"); // airport
-		Station p1 = new Station(410, 50, "P1"); // port
+		Station a1 = new Station(460, 100, "A1"); // airport
+		Station p1 = new Station(380, 50, "P1"); // port
 		
 		
 		// assume that all connections are bi-directional
 		// uncomment the following to see them appear in the gps screen :)
-		/*
-		company.connectTo(s1, 2); s1.connectTo(h4, 1); createBridges(company, s1, h4);
-												h4.connectTo(h5, 2); createBridges(h4, h5);
-												h4.connectTo(h6, 4); createBridges(h4, h6);
+		
+		company.connectTo(s1, 2); createBridges(company, s1);
+						  s1.connectTo(h4, 1); createBridges(s1, h4);
+									   h4.connectTo(h5, 2); createBridges(h4, h5);
+									   h4.connectTo(h6, 4); createBridges(h4, h6);
+									   				h6.connectTo(p1, 5); createBridges(h6, p1);
+									   							 p1.connectTo(a1, 3); createBridges(p1, a1);
 		
 		company.connectTo(h1, 3); createBridges(company, h1);
-						  h1.connectTo(h2, 3); h2.connectTo(w1, 6); createBridges(h1, h2, w1);
-						  h1.connectTo(h3, 8); h3.connectTo(f1, 8); createBridges(h1, h3, f1);
-		*/
+						  h1.connectTo(h2, 3); createBridges(h1, h2);
+						  			   h2.connectTo(w1, 6); createBridges(h2, w1);
+						  h1.connectTo(h3, 8); createBridges(h1, h3);
+						  			   h3.connectTo(f1, 8); createBridges(h3, f1);
 		
 		// the challenging part :)
 		company.connectTo(w2, 4); createBridges(company, w2);
-						  w2.connectTo(h3, 10); createBridges(w2, h3);
+						  w2.connectTo(h3, 15); createBridges(w2, h3);
 						  			   h3.connectTo(w1, 5); createBridges(h3, w1);
 						  			   h3.connectTo(f1, 9); createBridges(h3, f1);
 		// for testing purposes
@@ -48,7 +52,7 @@ public class CityMap {
 		company.connectTo(h3, 4); createBridges(company, h3);
 						  h3.connectTo(w1, 9);
 	}
-	
+	/*
 	public void createBridges(Station s1, final Station s2, final Station s3) {
 		// cityMap.put(s1, new HashMap<Station, Station>()); // this line is causing the same key's value to be overwritten
 		// there's no autovivification in Java, this is not Perl :^)
@@ -60,6 +64,7 @@ public class CityMap {
 		}
 		updateStationRecord(s1, s2, s3);
 	}
+	*/
 	
 	public void createBridges(Station s1, final Station s2) {
 		// cityMap.put(s1, new HashMap<Station, Station>());
@@ -278,10 +283,11 @@ public class CityMap {
 				path = it.next();
 				
 				// check against capacity
-				if (path.size() > capacity) {
+				if (path.size() - 1 > capacity) { 
+					// path.size() - 1 is to exclude the company, that is the starting point
 					if (analyseCapacity) {
 						System.out.println("Ignoring path " + path);
-						System.out.println("  Total stations: "+ path.size() + ", Capacity: " + capacity);
+						System.out.println("  Total stations(excluding company): "+ (path.size()-1) + ", Capacity: " + capacity);
 					}
 					continue;
 				}
