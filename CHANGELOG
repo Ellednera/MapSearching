@@ -1,3 +1,14 @@
+17 MAY 2021
+- Overloaded GPS::findChosenPath. The original version is used to check ONLY the starting station and the destination station. 
+  The newer version is used to look for the path that includes the extra stations in between.
+  *Take note: GPS::findChosenPath WITH capacity utilizes the CSP concept, will return null if the selected path is not valid
+              GPS::findChosenPath WITHOUT capacity utilizes the COP concept 
+- Modified the display of the map and relocated quite some stations
+- Added more stuff to the gui (remote control)
+- CityMap::createBridges for 3 stations in one go is not longer available due to some unexpected bridge issues that might occur
+- Due to new stations and connections added, CityMap::processFullNetwork's number of layers should be set to 5
+- TestScript is now more readable :)
+
 7 MAY 2021
 - CityMap::showAvailablePaths now supports checking against capacity
 - Changed Station::toString's return value to resemble the Cartesian coordinates
