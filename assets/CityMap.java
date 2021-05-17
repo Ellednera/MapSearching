@@ -81,12 +81,13 @@ public class CityMap {
 		stationDictionary.put(s1.name, s1);
 		stationDictionary.put(s2.name, s2);
 	}
-	
+	/*
 	private void updateStationRecord(Station s1, Station s2, Station s3) {
 		stationDictionary.put(s1.name, s1);
 		stationDictionary.put(s2.name, s2);
 		stationDictionary.put(s3.name, s3);
 	}
+	*/
 	
 	// this will fail due to Station's connectTo() method, minimum is 2 stations per connection
 	/*
