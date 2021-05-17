@@ -12,28 +12,57 @@ public class TestScript {
 		// List in java.util and java.awt confilcts
 		// we might deal with this later as java.awt.List might not be used
 		ArrayList<java.util.List<Station>> partialNetworks =  mapA.processPartialNetwork(true);
-		ArrayList<java.util.List<Station>> fullPaths = mapA.processFullNetwork(partialNetworks, 3, false);
+		ArrayList<java.util.List<Station>> fullPaths = mapA.processFullNetwork(partialNetworks, 5, false);
 		
-		ArrayList<java.util.List<Station>> availablePaths = mapA.showAvailablePaths("C", "W1", fullPaths, true, 3, true);
-		// W2 -> W1 successful, both partial netowrks have only 2 stations each, that's why it works
-		// for a long list of stations, trimming might be needed
+
+		// Restrictions
+		// 1. No loops!
+		// 2. All selected stations must be based on the map, fooling around will cause the program to fail/give strange output
 		
-		// this part is problematic, it only displays null
-		// findChosenPath(availablePaths);
-		// toArray(<T>[] a) a is a new T[], if not it won't work
+		// Rules
+		// 1. station names(start and destination) specified in stationNames.add() and mapA.showAvailablePaths() must match ie the same! 
+		ArrayList<Station> stationNames = new ArrayList<Station>(); // this part is based on the user input, hard-code for the moment :)
+		stationNames.add( mapA.stationDictionary.get("C") );
+		stationNames.add( mapA.stationDictionary.get("W2") );
+		stationNames.add( mapA.stationDictionary.get("H3") );
+		stationNames.add( mapA.stationDictionary.get("F1") ); // these 4 are actual valid paths
+		//stationNames.add( mapA.stationDictionary.get("C") );
 		
-		Station[] chosenPath = gps.findChosenPath(availablePaths, "C", "W1");
-		System.out.println("The shortest path(according to sequence):");
-		//System.out.println(chosenPath); // this is only a reference, because it's retruned from an array
-		for (int i=0; i<chosenPath.length; i++) {
-			System.out.print(chosenPath[i].name + ",");
+		ArrayList<java.util.List<Station>> availablePaths;
+		
+		availablePaths = mapA.showAvailablePaths("C", "F1", fullPaths, false, 10, false);
+		
+		Station[] chosenPath_CSP = gps.findChosenPath(availablePaths, stationNames, 10);
+		// CSP
+		if (chosenPath_CSP != null) {
+			System.out.println("Showing the path to use (CSP)...");
+			for (int i=0; i <= chosenPath_CSP.length - 1; i++) {
+				System.out.print(chosenPath_CSP[i]);
+				if (i != chosenPath_CSP.length - 1) {
+					System.out.print(", ");
+				}
+			}
+		}
+		System.out.println("\n");
+		
+		// COP
+		availablePaths = mapA.showAvailablePaths("C", "W1", fullPaths, false, 10, false);
+		
+		Station[] chosenPath_COP = gps.findChosenPath(availablePaths, "C", "W1");
+		System.out.println("Showing the shortest path(COP):");
+		for (int i=0; i<chosenPath_COP.length; i++) {
+			System.out.print(chosenPath_COP[i].name);
+			if (i != chosenPath_COP.length - 1) {
+				System.out.print(", ");
+			}
 		}
 		System.out.println("");
 		
+		// GUI
 		Screen GPS_Screen = new Screen();
 		GPS_Screen.sendMap(mapA);
-		GPS_Screen.renderGraphics(300, 100, 500, 500); // only stations connected using CityMap::connectBridges will be drawn
-
+		GPS_Screen.renderGraphics(300, 100, 680, 600); // only stations connected using CityMap::connectBridges will be drawn
+		
 	}
 	
 	// these 2 tests can be written in a more efficient way :)
