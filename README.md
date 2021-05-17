@@ -33,16 +33,21 @@ Calls *toString()* and adds on more details
 
 ### 2. assets::CityMap
 #### public CityMap()
-The default constructor. This will set and connect all the Stations. This constructor **MUST** be called if you're using the *GPS*. You can still add on connections if you want to :)
+The default constructor. This will set and connect all the Stations. You can also add-on connections if you want to :)
 
-#### public void createBridges(Station s1, Station s2, Station s3)
+The number of layers by default is now 5 instaed of 3
+
+
+~~#### public void createBridges(Station s1, Station s2, Station s3)
 Connects 3 *Station*s in one go. This is the maximum stations that can be connected **through this method**. See *processFullNetwork()* method to link more than 3 *Station*s.
+~~
+Connecting 3 stations in one go is no longer available
 
 #### public void createBridges(Station s1, Station s2)
 Connects 2 *Stations* in one go. This is the minimum stations that can be connected.
 
 #### private void updateStationRecord(Station s1, Station s2)
-#### private void updateStationRecord(Station s1, Station s2, Station s3)
+~~#### private void updateStationRecord(Station s1, Station s2, Station s3)~~
 These two methods will be called by the two *createBridges* methods. The record is needed for the actual searching based on user input.
 
 #### public ArrayList<List\<Station>> processPartialNetwork(boolean verbose)
@@ -76,10 +81,17 @@ Setting **analyseCapacity** to true will give details about the ignored paths.
 ### 3. assets::GPS
 Just compile and run this script, and a gui will appear :)
 
-#### private static Station[] findChosenPath(ArrayList<java.util.List\<Station>> paths_2_filter, String check_start_name, String check_destination_name)
-This is the last processing step. This will chose the shortest path for the Delivery Agent.
+#### public Station[] findChosenPath(ArrayList<java.util.List<Station>> paths_2_filter, String check_start_name, String check_destination_name)
+This is the last processing step. This will chose the shortest path for the Delivery Agent. This only checks for the starting and destination stations.
 
-*Search includes COP currently, CSP will be added in the future
+This method utilizes the **COP** concept.
+
+#### public Station[] findChosenPath(ArrayList<java.util.List\<Station>> paths_2_filter, ArrayList\<Station> stationNames, int capacity)
+This is the last processing step. Unlike the method above, this method will try to find a path that includes all the stations (according to sequence) specified in *stationNames*. Take note that this method doesn't call the above method eventhough it should :) If the path is invalid or no path can be determined for the specied stations, *null* is returned
+
+This method utilizes the **CSP** concept.
+
+This method was suppose to refine the above method, but it ended up an idependent method :)
 
 #### private static Station[] schwartzianTransform(ArrayList<java.util.List\<Station>> paths_2_filter)
 Schwartzian transformation used by *findChosenPath* method
@@ -112,7 +124,22 @@ x & y are the location of where the window should display
 
 w & h are the width and height of the screen
 
+#### private Panel renderStationList()
+Creates the panel for the list of station names. This is a selection box
 
+#### private java.awt.List poolList()
+Called by *renderStationList()* mentioned above. This is the data/names of the stations
+
+*Take note that the return type might conflict with java.util.List
+
+#### private Panel renderDetails()
+Creates the panel for entering the capacity, weight, and algorithm.
+
+#### private Panel renderRouteDisplay()
+Creates the text box on the bottom of the screen. This is to display the stations selected (in sequence) based on the selection list
+
+#### private Panel renderRouteButton()
+Creates the button with the word "Route" to find the path based on the selected station names.
 
 #### public void paint(Graphics g)
 Overriden to can draw the stations and the connecting lines as well as the name of the stations.
