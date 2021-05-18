@@ -118,22 +118,49 @@ w & h are the width and height of the screen
 #### private Panel renderStationList()
 Creates the panel for the list of station names. This is a selection box
 
+This method will be called by *renderGraphics()*
+
 #### private java.awt.List poolList()
 Called by *renderStationList()* mentioned above. This is the data/names of the stations
+
+This method will be called by *renderStationList()* to populate the list.
 
 *Take note that the return type might conflict with java.util.List
 
 #### private Panel renderDetails()
 Creates the panel for entering the capacity, weight, and algorithm.
 
-#### private Panel renderRouteDisplay()
+This method will be called by *renderGraphics()*
+
+#### private Panel renderRouteDisplay(TextField routeTF)
 Creates the text box on the bottom of the screen. This is to display the stations selected (in sequence) based on the selection list
 
-#### private Panel renderRouteButton()
+*routeTF* is the texf field which must be set in the Screen class for the action listener to work.
+
+This method will be called by *renderGraphics()*
+
+#### private Panel renderRouteButton(Button routeButton)
 Creates the button with the word "Route" to find the path based on the selected station names.
+
+*routeButton* is the button with the word "Route" which must be set in the Screen class for the action listener to work.
+
+This method will be called by *renderGraphics()*
+
+#### private Panel renderRegisterRouteButton(Button registerRouteButton, Button clearRouteButton)
+Creates the panel for the 2 buttons--register route and clear route.
+
+*registerRouteButton* and *clearRouteButton* correspond to the "Register Route" and "Clear Route" buttons respectivly. This passing of parameters is to make the action listener work.
+
+This method will be called by *renderGraphics()*
 
 #### public void paint(Graphics g)
 Overriden to can draw the stations and the connecting lines as well as the name of the stations.
+
+#### private class ButtonListener
+This inner class implements ActionListener. This is used for the buttons.
+
+#### private class ListListener 
+This inner classimplements ItemListener. This is used for the station list.
 
 ### 5. TestScript.java
 This is the general script for testing the other classes. This program includes several testing features so that the user/programmer doesn't need to manually write codes to perform tests.
