@@ -8,28 +8,22 @@ public class Screen extends Frame {
 	//private Station dummy = new Station(300, 300, "Dummy");
 	private Iterator<Station> stations_it = null;
 	private CityMap localMap = null;
+	// private Station[] chosenPathToHighlight;
 	
 	private int stationDiameter = 20;
 	private int stationRadius = stationDiameter / 2;
 	
+	private java.awt.List stationList = new java.awt.List();
+	private Button routeButton = new Button("Route");
+	private TextField routeTF = new TextField();
+	private ArrayList<String> selectedStationNames = new ArrayList<String>();
+	private Button registerRouteButton = new Button("Register Route");
+	private Button clearRouteButton = new Button("Clear route");
+	
 	public Screen() {
+		
 		super("COS30018 Vehicle Routing System - GPS");
-		// listeners
-		// test minimixing and maximixing
-		
-		/*
-		// doesn't do much, just click the screen and the graphic will come back
-		this.addWindowListener(new WindowAdapter() {
-			public void windowIconified(WindowEvent e) {
-				// repaint
-				Screen gps_screen = (Screen) e.getSource();
-				gps_screen.sendMap(localMap);
-				gps_screen.repaint();
-				//System.exit(-1);
-			}
-		});
-		*/
-		
+		// listeners		
 		this.addMouseListener( new MouseAdapter() {
 			public void mousePressed(MouseEvent e) {
 				Screen gps_screen = (Screen) e.getSource();
@@ -38,14 +32,13 @@ public class Screen extends Frame {
 			}
 		} );
 		
-		
-		// this will cause everything to terminate
-		/*this.addWindowListener( new WindowAdapter() {
-			public void windowClosing(WindowEvent e) {
-				// setVisible(false);
-				System.exit(-1);
-			}
-		} );*/
+		// add listeners
+		routeButton.addActionListener( new ButtonListener() );
+		registerRouteButton.addActionListener( new ButtonListener() );
+		clearRouteButton.addActionListener( new ButtonListener() );
+		// stationList.addItemListener( new ListListener() ); // this must go into renderStationList()
+		selectedStationNames.add("C");
+
 	}
 	
 	public void sendMap(CityMap map) {
@@ -58,29 +51,30 @@ public class Screen extends Frame {
 		setBackground(Color.PINK);
 		setLayout(null);
 
-		Panel stationList = renderStationList();
+		Panel stationListPanel = renderStationList();
 		Panel details = renderDetails();
-		Panel routeDisplay = renderRouteDisplay();
-		Panel routeButton = renderRouteButton();
+		Panel routeDisplay = renderRouteDisplay(this.routeTF);
+		Panel routeButton = renderRouteButton(this.routeButton);
+		Panel registerRoute = renderRegisterRouteButton(this.registerRouteButton, this.clearRouteButton);
 		
-		add(stationList); add(details); add(routeDisplay); add(routeButton);
+		add(stationListPanel); add(details); add(routeDisplay); add(routeButton); add(registerRoute);
 		
 		setVisible(true);
 	}
 	
 	private Panel renderStationList() {
-		Panel stationList = new Panel();
-		stationList.setBounds(500, 30, 180, 250);
-		stationList.setLayout(new GridLayout(1, 1));
-		stationList.setVisible(true);
-		stationList.setBackground(Color.BLUE);
+		Panel stationListPanel = new Panel();
+		stationListPanel.setBounds(500, 30, 180, 250);
+		stationListPanel.setLayout(new GridLayout(1, 1));
+		stationListPanel.setVisible(true);
+		stationListPanel.setBackground(Color.BLUE);
 		
-		java.awt.List stations = poolList();
-		stations.setMultipleMode(true);
+		this.stationList = poolList();
+		this.stationList.setMultipleMode(true);
+		this.stationList.addItemListener( new ListListener() );
+		stationListPanel.add(this.stationList);
 		
-		stationList.add(stations);
-		
-		return stationList;
+		return stationListPanel;
 	}
 	
 	private java.awt.List poolList() {
@@ -102,10 +96,9 @@ public class Screen extends Frame {
 		return stations;
 	}
 	
-	// need to change the algorithm to select box
 	private Panel renderDetails() {
 		Panel details = new Panel(); 
-		details.setBounds(500, 300, 180, 100);
+		details.setBounds(500, 345, 180, 100);
 		details.setLayout(new GridLayout(3, 2));
 		details.setVisible(true);
 		details.setBackground(Color.CYAN);
@@ -132,25 +125,24 @@ public class Screen extends Frame {
 		return details;
 	}
 	
-	private Panel renderRouteDisplay() {
+	private Panel renderRouteDisplay(TextField routeTF) {
 		Panel routeDisplay = new Panel();
-		routeDisplay.setBounds(0, 500, 680, 100);
+		routeDisplay.setBounds(8, 500, 680, 25);
 		routeDisplay.setLayout(new GridLayout(1, 1));
 		routeDisplay.setVisible(true);
 		routeDisplay.setBackground(Color.YELLOW);
 		
 		// TextField
-		TextField routeTF = new TextField();
 		routeTF.setBackground(new Color(250, 150, 250));
 		routeTF.setEnabled(false);
-		routeTF.setText("Company->");
+		routeTF.setText("Select the stations on the top right panel and click ''Register Route");
 		
 		routeDisplay.add(routeTF);
 		
 		return routeDisplay;
 	}
 	
-	private Panel renderRouteButton() {
+	private Panel renderRouteButton(Button routeButton) {
 		
 		Panel routeButtonPanel = new Panel();
 		routeButtonPanel.setBounds(500, 450, 180, 50);
@@ -158,11 +150,26 @@ public class Screen extends Frame {
 		routeButtonPanel.setVisible(true);
 		routeButtonPanel.setBackground(Color.ORANGE);
 		
-		Button routeButton = new Button("Route");
 		routeButton.setActionCommand("route");
 		routeButtonPanel.add(routeButton, BorderLayout.CENTER);
 		
 		return routeButtonPanel;
+	}
+	
+	private Panel renderRegisterRouteButton(Button registerRouteButton, Button clearRouteButton) {
+		Panel registerRouteButtonPanel = new Panel();
+		registerRouteButtonPanel.setBounds(500, 280, 180, 50);
+		registerRouteButtonPanel.setLayout(new GridLayout(1, 2));
+		registerRouteButtonPanel.setVisible(true);
+		registerRouteButtonPanel.setBackground(Color.GREEN);
+		
+		registerRouteButton.setActionCommand("register route");
+		clearRouteButton.setActionCommand("clear route");
+		
+		registerRouteButtonPanel.add(registerRouteButton);
+		registerRouteButtonPanel.add(clearRouteButton);
+		
+		return registerRouteButtonPanel;
 	}
 	
 	public void paint(Graphics g) {
@@ -206,4 +213,50 @@ public class Screen extends Frame {
 		
 		g.setColor(c);		
 	}
+	
+	private class ButtonListener implements ActionListener {
+		
+		public void actionPerformed(ActionEvent e) {
+			//System.out.println("Button pressed!");
+			Button someButton = (Button) e.getSource();
+			
+			// we might still have some more buttons
+			if (someButton.getActionCommand() == "route") {
+				
+				System.out.println("Route button pressed");
+				
+			} else if (someButton.getActionCommand() == "register route") {
+				
+				System.out.println("Register route button pressed");
+				System.out.println("Selected stations: " + selectedStationNames);
+				
+				routeTF.setText(selectedStationNames.toString());
+				
+			} else if (someButton.getActionCommand() == "clear route") {
+				
+				System.out.println("Route cleared");
+				
+				selectedStationNames = new ArrayList<String>();
+				selectedStationNames.add("C");
+				routeTF.setText(selectedStationNames.toString());
+				
+				System.out.println("Selected stations: " + selectedStationNames);
+				
+			}
+		}
+	}
+	
+	private class ListListener implements ItemListener {
+		public void itemStateChanged(ItemEvent e) {
+			java.awt.List selection = (java.awt.List) e.getSource();
+			System.out.println(selection.getSelectedItem() + " was selected");
+			
+			if (selection.getSelectedItem() != null) {
+				selectedStationNames.add(selection.getSelectedItem());
+			}
+			
+			selection.deselect(selection.getSelectedIndex());
+		}
+	}
+	
 }
