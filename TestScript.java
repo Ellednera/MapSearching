@@ -44,9 +44,24 @@ public class TestScript {
 		}
 		System.out.println("\n");
 		
-		// COP
-		availablePaths = mapA.showAvailablePaths("C", "W1", fullPaths, false, 10, false);
-		Station[] chosenPath_COP = gps.findChosenPath(availablePaths, "C", "W1");
+		// COP, 
+		// limitations: 1. One way only, 
+		// 				2. Cannot be a path that intersects C, it will end up with a reverse and a normal path, will give error
+		// Reason: we're using a HashMap for speed, after all everything will start from C :) Unless the bridges are created manually
+		availablePaths = mapA.showAvailablePaths("H4", "A1", fullPaths, false, 10, false);
+		Station[] chosenPath_COP = gps.findChosenPath(availablePaths, "H4", "A1");
+		
+		System.out.println("Showing the shortest path(COP):");
+		for (int i=0; i<chosenPath_COP.length; i++) {
+			System.out.print(chosenPath_COP[i].name);
+			if (i != chosenPath_COP.length - 1) {
+				System.out.print(", ");
+			}
+		}
+		System.out.println("");
+		
+		availablePaths = mapA.showAvailablePaths("C", "A1", fullPaths, false, 10, false);
+		chosenPath_COP = gps.findChosenPath(availablePaths, "C", "A1");
 		
 		System.out.println("Showing the shortest path(COP):");
 		for (int i=0; i<chosenPath_COP.length; i++) {
@@ -60,7 +75,7 @@ public class TestScript {
 		// GUI
 		Screen GPS_Screen = new Screen();
 		GPS_Screen.sendMap(mapA);
-		GPS_Screen.renderGraphics(300, 100, 680, 600); // only stations connected using CityMap::connectBridges will be drawn
+		GPS_Screen.renderGraphics(300, 100, 690, 530); // only stations connected using CityMap::connectBridges will be drawn
 		
 	}
 	
