@@ -170,7 +170,7 @@ This is the name of the algorithm selected in the GUI. It's either "COP" or "CSP
 Returns the station selected in the GUI if the "Register Route" button is pressed. It is assumed that when this method is called, the user has actually selected the desired stations and registered them into the system.
 
 #### public void paint(Graphics g)
-Overriden to can draw the stations and the connecting lines as well as the name of the stations.
+Overriden to draw the stations and the connecting lines as well as the name of the stations.
 
 #### private class ButtonListener
 This inner class implements ActionListener. This is used for the buttons.
