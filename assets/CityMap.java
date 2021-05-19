@@ -11,7 +11,7 @@ public class CityMap {
 	
 	// constructor - directly initialize the map
 	public CityMap() {
-		Station company = new Station(255, 230, "C"); // company
+		Station cw = new Station(255, 230, "CW"); // company
 		Station s1 = new Station(320, 165, "S1"); // station
 		Station h1 = new Station(150, 150, "H1"); // houses
 		Station h2 = new Station(50, 50, "H2");
@@ -25,32 +25,31 @@ public class CityMap {
 		Station a1 = new Station(460, 100, "A1"); // airport
 		Station p1 = new Station(380, 50, "P1"); // port
 		
-		
 		// assume that all connections are bi-directional
 		// uncomment the following to see them appear in the gps screen :)
 		
-		company.connectTo(s1, 2); createBridges(company, s1);
-						  s1.connectTo(h4, 1); createBridges(s1, h4);
-									   h4.connectTo(h5, 2); createBridges(h4, h5);
-									   h4.connectTo(h6, 4); createBridges(h4, h6);
-									   				h6.connectTo(p1, 5); createBridges(h6, p1);
-									   							 p1.connectTo(a1, 3); createBridges(p1, a1);
-		
-		company.connectTo(h1, 3); createBridges(company, h1);
-						  h1.connectTo(h2, 3); createBridges(h1, h2);
-						  			   h2.connectTo(w1, 6); createBridges(h2, w1);
-						  h1.connectTo(h3, 8); createBridges(h1, h3);
-						  			   h3.connectTo(f1, 8); createBridges(h3, f1);
+		cw.connectTo(s1, 2); createBridges(cw, s1);
+		  s1.connectTo(h4, 1); createBridges(s1, h4);
+					   h4.connectTo(h5, 2); createBridges(h4, h5);
+					   h4.connectTo(h6, 4); createBridges(h4, h6);
+					   				h6.connectTo(p1, 5); createBridges(h6, p1);
+					   							 p1.connectTo(a1, 3); createBridges(p1, a1);
+
+		cw.connectTo(h1, 3); createBridges(cw, h1);
+				  h1.connectTo(h2, 3); createBridges(h1, h2);
+				  			   h2.connectTo(w1, 6); createBridges(h2, w1);
+				  h1.connectTo(h3, 8); createBridges(h1, h3);
+				  			   h3.connectTo(f1, 8); createBridges(h3, f1);
 		
 		// the challenging part :)
-		company.connectTo(w2, 4); createBridges(company, w2);
-						  w2.connectTo(h3, 15); createBridges(w2, h3);
-						  			   h3.connectTo(w1, 5); createBridges(h3, w1);
-						  			   h3.connectTo(f1, 9); createBridges(h3, f1);
+		cw.connectTo(w2, 4); createBridges(cw, w2);
+				  w2.connectTo(h3, 15); createBridges(w2, h3);
+				  			   h3.connectTo(w1, 5); createBridges(h3, w1);
+				  			   h3.connectTo(f1, 9); createBridges(h3, f1);
 		// for testing purposes
-		company.connectTo(w1, 11); createBridges(company, w1);
-		company.connectTo(h3, 4); createBridges(company, h3);
-						  h3.connectTo(w1, 9);
+		cw.connectTo(w1, 11); createBridges(cw, w1);
+		cw.connectTo(h3, 4); createBridges(cw, h3);
+				  h3.connectTo(w1, 9);
 	}
 	/*
 	public void createBridges(Station s1, final Station s2, final Station s3) {

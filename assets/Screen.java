@@ -8,7 +8,8 @@ public class Screen extends Frame {
 	//private Station dummy = new Station(300, 300, "Dummy");
 	private Iterator<Station> stations_it = null;
 	private CityMap localMap = null;
-	// private Station[] chosenPathToHighlight;
+	private Station[] chosenPath;
+	private boolean hasChosenPath = false;
 	
 	private int stationDiameter = 20;
 	private int stationRadius = stationDiameter / 2;
@@ -19,6 +20,15 @@ public class Screen extends Frame {
 	private ArrayList<String> selectedStationNames = new ArrayList<String>();
 	private Button registerRouteButton = new Button("Register Route");
 	private Button clearRouteButton = new Button("Clear route");
+	private TextField constraintTF = new TextField();
+	private Choice constraint = new Choice();
+	private Choice algorithmMenu = new Choice();
+	
+	private int constraintData;
+	private String constraintChoice;
+	private String selectedAlgorithm;
+	
+	public boolean infoIsAssumedComplete = false; // out there, make an infinity loop to check this
 	
 	public Screen() {
 		
@@ -37,8 +47,11 @@ public class Screen extends Frame {
 		registerRouteButton.addActionListener( new ButtonListener() );
 		clearRouteButton.addActionListener( new ButtonListener() );
 		// stationList.addItemListener( new ListListener() ); // this must go into renderStationList()
-		selectedStationNames.add("C");
-
+		selectedStationNames.add("CW");
+		
+		constraintTF.addActionListener( new ConstraintTFActionListener() ); // disable it by hitting enter key
+		constraint.addItemListener( new ConstraintItemListener() );
+		algorithmMenu.addItemListener( new SelectedAlgorithmItemListener() );
 	}
 	
 	public void sendMap(CityMap map) {
@@ -46,25 +59,41 @@ public class Screen extends Frame {
 		this.localMap = map;
 	}
 	
-	public void renderGraphics(int x, int y, int w, int h) {
-		setBounds(x, y, w, h);
+	// the actual GUI ie the Screen
+	public void renderGraphics() {
+		setBounds(300, 100, 690, 530);
 		setBackground(Color.PINK);
 		setLayout(null);
 
+		Panel stationListLabelPanel = renderStationListLabel();
 		Panel stationListPanel = renderStationList();
-		Panel details = renderDetails();
+		Panel details = renderDetails(constraintTF, constraint, algorithmMenu);
 		Panel routeDisplay = renderRouteDisplay(this.routeTF);
 		Panel routeButton = renderRouteButton(this.routeButton);
 		Panel registerRoute = renderRegisterRouteButton(this.registerRouteButton, this.clearRouteButton);
 		
-		add(stationListPanel); add(details); add(routeDisplay); add(routeButton); add(registerRoute);
+		add(stationListLabelPanel); add(stationListPanel); add(details); add(routeDisplay); add(routeButton); add(registerRoute);
 		
 		setVisible(true);
 	}
 	
+	private Panel renderStationListLabel() {
+		Panel stationListPanel = new Panel(); 
+		stationListPanel.setBounds(500, 30, 180, 30);
+		stationListPanel.setLayout(new GridLayout(1, 1));
+		stationListPanel.setVisible(true);
+		stationListPanel.setBackground(new Color(220, 220, 220));
+		
+		Label stationListLabel = new Label("~ ~ STATION LIST ~ ~");
+		stationListLabel.setAlignment(Label.CENTER);
+		stationListPanel.add(stationListLabel);
+		
+		return stationListPanel;
+	}
+	
 	private Panel renderStationList() {
 		Panel stationListPanel = new Panel();
-		stationListPanel.setBounds(500, 30, 180, 250);
+		stationListPanel.setBounds(500, 60, 180, 280);
 		stationListPanel.setLayout(new GridLayout(1, 1));
 		stationListPanel.setVisible(true);
 		stationListPanel.setBackground(Color.BLUE);
@@ -83,9 +112,13 @@ public class Screen extends Frame {
 		ArrayList<String> stationNames2sort = new ArrayList<String>();;
 		
 		Iterator<String> it =  localMap.stationDictionary.keySet().iterator();
-		
+		String stationName;
 		for (int i=0; it.hasNext(); i++) {
-			stationNames2sort.add( it.next() );
+			stationName = it.next();
+			if (stationName == "CW") {
+				continue;
+			}
+			stationNames2sort.add( stationName );
 		}
 		Collections.sort(stationNames2sort);
 		
@@ -96,30 +129,44 @@ public class Screen extends Frame {
 		return stations;
 	}
 	
-	private Panel renderDetails() {
+	private Panel renderRegisterRouteButton(Button registerRouteButton, Button clearRouteButton) {
+		Panel registerRouteButtonPanel = new Panel();
+		registerRouteButtonPanel.setBounds(500, 340, 180, 50);
+		registerRouteButtonPanel.setLayout(new GridLayout(1, 2));
+		registerRouteButtonPanel.setVisible(true);
+		registerRouteButtonPanel.setBackground(Color.GREEN);
+		
+		registerRouteButton.setActionCommand("register route");
+		clearRouteButton.setActionCommand("clear route");
+		
+		registerRouteButton.setBackground(new Color(210, 210, 210));
+		
+		registerRouteButtonPanel.add(registerRouteButton);
+		registerRouteButtonPanel.add(clearRouteButton);
+		
+		return registerRouteButtonPanel;
+	}
+	
+	private Panel renderDetails(TextField constraintTF, Choice constraint, Choice algorithmMenu) {
 		Panel details = new Panel(); 
-		details.setBounds(500, 345, 180, 100);
-		details.setLayout(new GridLayout(3, 2));
+		details.setBounds(500, 390, 180, 60);
+		details.setLayout(new GridLayout(2, 2));
 		details.setVisible(true);
 		details.setBackground(Color.CYAN);
-		
-		Label capacity = new Label();
-		capacity.setText("Capacity: ");
-		TextField capacityTF = new TextField();
-		
-		Label weight = new Label();
-		weight.setText("Weight (kg): ");
-		TextField weightTF = new TextField();
+
+		constraint.add("-Constraint-");
+		constraint.add("Capacity");
+		constraint.add("Weight");
+		// constraint.setSize(60, 30); // doesn't work
 		
 		Label algorithm = new Label();
 		algorithm.setText("Algorithm: ");
-		Choice algorithmMenu = new Choice();
+		
+		algorithmMenu.add("-Algorithm-");
 		algorithmMenu.add("CSP");
 		algorithmMenu.add("COP");
-		algorithmMenu.add("ACO");
 		
-		details.add(capacity); details.add(capacityTF);
-		details.add(weight); details.add(weightTF);
+		details.add(constraint); details.add(constraintTF);
 		details.add(algorithm); details.add(algorithmMenu);
 		
 		return details;
@@ -134,8 +181,8 @@ public class Screen extends Frame {
 		
 		// TextField
 		routeTF.setBackground(new Color(250, 150, 250));
-		routeTF.setEnabled(false);
-		routeTF.setText("Select the stations on the top right panel and click ''Register Route");
+		//routeTF.setEnabled(false);
+		routeTF.setText("Select the stations on the top right panel and click \"Register Route\"");
 		
 		routeDisplay.add(routeTF);
 		
@@ -151,25 +198,41 @@ public class Screen extends Frame {
 		routeButtonPanel.setBackground(Color.ORANGE);
 		
 		routeButton.setActionCommand("route");
+		routeButton.setBackground(new Color(220, 220, 220));
 		routeButtonPanel.add(routeButton, BorderLayout.CENTER);
 		
 		return routeButtonPanel;
 	}
 	
-	private Panel renderRegisterRouteButton(Button registerRouteButton, Button clearRouteButton) {
-		Panel registerRouteButtonPanel = new Panel();
-		registerRouteButtonPanel.setBounds(500, 280, 180, 50);
-		registerRouteButtonPanel.setLayout(new GridLayout(1, 2));
-		registerRouteButtonPanel.setVisible(true);
-		registerRouteButtonPanel.setBackground(Color.GREEN);
+	public void setChosenPathToHighlight(Station[] chosenPath) {
+		this.chosenPath = chosenPath;
+		hasChosenPath = true;
+		repaint();
+	}
+	
+	public int getConstraintData() {
+		return constraintData;
+	}
+	
+	public String getConstraintChoice() {
+		return constraintChoice;
+	}
+	
+	public String getSelectedAlgorithm() {
+		return selectedAlgorithm;
+	}
+	
+	public ArrayList<Station> getSelectedStations() {
 		
-		registerRouteButton.setActionCommand("register route");
-		clearRouteButton.setActionCommand("clear route");
+		ArrayList<Station> selectedStations = new ArrayList<Station>();
 		
-		registerRouteButtonPanel.add(registerRouteButton);
-		registerRouteButtonPanel.add(clearRouteButton);
+		Station station;
+		for (int i=0; i < selectedStationNames.size(); i++) {
+			station = localMap.stationDictionary.get( selectedStationNames.get(i) );
+			selectedStations.add( station );
+		}
 		
-		return registerRouteButtonPanel;
+		return selectedStations; 
 	}
 	
 	public void paint(Graphics g) {
@@ -204,6 +267,25 @@ public class Screen extends Frame {
 			}
 		}
 		
+		// paint chosenPath if any
+		if (hasChosenPath) {
+			//System.out.println("Painting extra stuff");
+			
+			// circles
+			for (int i=0; i < chosenPath.length; i++) {
+				// chosen circles
+				g.setColor(new Color(200, 130, 90));
+				g.fillOval(chosenPath[i].x, chosenPath[i].y, stationDiameter, stationDiameter);
+			}
+			
+			for (int i=1; i < chosenPath.length; i++) {
+				// road
+				g.setColor(new Color(255, 130, 90));
+				g.drawLine(chosenPath[i-1].x + stationRadius, chosenPath[i-1].y +stationRadius, 	
+							chosenPath[i].x +stationRadius , chosenPath[i].y +stationRadius);
+			}
+		}
+		
 		// to test repaint() logic
 		/*
 		g.setColor(Color.WHITE);
@@ -224,6 +306,7 @@ public class Screen extends Frame {
 			if (someButton.getActionCommand() == "route") {
 				
 				System.out.println("Route button pressed");
+				infoIsAssumedComplete = true;
 				
 			} else if (someButton.getActionCommand() == "register route") {
 				
@@ -237,7 +320,7 @@ public class Screen extends Frame {
 				System.out.println("Route cleared");
 				
 				selectedStationNames = new ArrayList<String>();
-				selectedStationNames.add("C");
+				selectedStationNames.add("CW");
 				routeTF.setText(selectedStationNames.toString());
 				
 				System.out.println("Selected stations: " + selectedStationNames);
@@ -245,6 +328,7 @@ public class Screen extends Frame {
 			}
 		}
 	}
+	
 	
 	private class ListListener implements ItemListener {
 		public void itemStateChanged(ItemEvent e) {
@@ -259,4 +343,30 @@ public class Screen extends Frame {
 		}
 	}
 	
+	private class ConstraintItemListener implements ItemListener {
+		public void itemStateChanged(ItemEvent e) {
+			Choice constraint = (Choice) e.getSource();
+			constraintChoice = constraint.getSelectedItem();
+			System.out.println("Constraint " + constraintChoice + " chosen");
+		}
+	}
+	
+	private class ConstraintTFActionListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			//System.out.println("Enter key pressed for constraint text field!");
+			TextField constraintTF = (TextField) e.getSource();
+			constraintTF.setEnabled(false);
+			constraintData = Integer.parseInt( constraintTF.getText() );
+			System.out.println("Constraint data: " + constraintData);
+		}
+	}
+	
+	
+	private class SelectedAlgorithmItemListener implements ItemListener {
+		public void itemStateChanged(ItemEvent e) {
+			Choice algorithm = (Choice) e.getSource();
+			selectedAlgorithm = algorithm.getSelectedItem();
+			System.out.println("Algorithm selected: " + selectedAlgorithm);
+		}
+	}
 }
