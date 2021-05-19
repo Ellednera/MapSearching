@@ -72,7 +72,7 @@ If **verbose** is set to true, it will display all the available paths. This out
 Setting **analyseCapacity** to true will give details about the ignored paths.
 
 ### 3. assets::GPS
-#### public Station[] findChosenPath(ArrayList<java.util.List<Station>> paths_2_filter, String check_start_name, String check_destination_name)
+#### public Station[] findChosenPath(ArrayList<java.util.List\<Station>> paths_2_filter, String check_start_name, String check_destination_name)
 This is the last processing step. This will chose the shortest path for the Delivery Agent. This only checks for the starting and destination stations.
 
 This method utilizes the **COP** concept.
@@ -83,6 +83,8 @@ This is the last processing step. Unlike the method above, this method will try 
 This method utilizes the **CSP** concept.
 
 This method was suppose to refine the above method, but it ended up an idependent method :)
+
+*Take note that this algorithm doesn't guarantee correct results all the time, if any paths are situated in a looping network, it is very likely for the algorithm to fail. This has something to do with the way all the assets were coded.
 
 #### private static Station[] schwartzianTransform(ArrayList<java.util.List\<Station>> paths_2_filter)
 Schwartzian transformation used by *findChosenPath* method
@@ -102,18 +104,17 @@ This sets the title/name of the program and overrides the following listeners:
  - mousePressed(MouseEvent e)
    - to cause the map to be redrawn if the gui window is minimized and open again
    - sendMap() and repaint() is called here
+
+This method also creates all the necessary components for the GUI
  
 #### public void sendMap(CityMap map)
 This method will process the iterator of all the values of CityMap's stationDictionary variable and pass the whole map to the class for repainting the screen
 
-#### public void renderGraphics(int x, int y, int w, int h) 
-(Under development) Renders the display. Some circles will be displayed.
+#### public void renderGraphics() 
+Renders the display. The city map will be drawn.
 
-
-x & y are the location of where the window should display
-
-
-w & h are the width and height of the screen
+#### private Panel renderStationListLabel()
+Create the panel for the label with the text "\~~STATION LIST\~~" at the top right corner of the screen
 
 #### private Panel renderStationList()
 Creates the panel for the list of station names. This is a selection box
@@ -126,6 +127,13 @@ Called by *renderStationList()* mentioned above. This is the data/names of the s
 This method will be called by *renderStationList()* to populate the list.
 
 *Take note that the return type might conflict with java.util.List
+
+#### private Panel renderRegisterRouteButton(Button registerRouteButton, Button clearRouteButton)
+Creates the panel for the 2 buttons--register route and clear route.
+
+*registerRouteButton* and *clearRouteButton* correspond to the "Register Route" and "Clear Route" buttons respectivly. This passing of parameters is to make the action listener work.
+
+This method will be called by *renderGraphics()*
 
 #### private Panel renderDetails()
 Creates the panel for entering the capacity, weight, and algorithm.
@@ -146,12 +154,20 @@ Creates the button with the word "Route" to find the path based on the selected 
 
 This method will be called by *renderGraphics()*
 
-#### private Panel renderRegisterRouteButton(Button registerRouteButton, Button clearRouteButton)
-Creates the panel for the 2 buttons--register route and clear route.
+#### public void setChosenPathToHighlight(Station[] chosenPath)
+This method draw/paints the *chosenPath* on the screen with another color after being determined by any of the algorithm
 
-*registerRouteButton* and *clearRouteButton* correspond to the "Register Route" and "Clear Route" buttons respectivly. This passing of parameters is to make the action listener work.
+#### public int getConstraintData()
+This is the actual capacity or the weight
 
-This method will be called by *renderGraphics()*
+#### public String getConstraintChoice()
+This is the type of constrains selected in the GUI. It's either "Capacity" or "Weight". You might need to do some text transformation (based on your preferences) when dealing with them in the *ConstraintItemListener* inner class
+
+#### public String getSelectedAlgorithm()
+This is the name of the algorithm selected in the GUI. It's either "COP" or "CSP". You might need to do some text transformation (based on your preferences) when dealing with them in the *SelectedAlgorithmItemListener* inner class
+
+#### public ArrayList\<Station> getSelectedStations()
+Returns the station selected in the GUI if the "Register Route" button is pressed. It is assumed that when this method is called, the user has actually selected the desired stations and registered them into the system.
 
 #### public void paint(Graphics g)
 Overriden to can draw the stations and the connecting lines as well as the name of the stations.
@@ -162,13 +178,22 @@ This inner class implements ActionListener. This is used for the buttons.
 #### private class ListListener 
 This inner classimplements ItemListener. This is used for the station list.
 
+#### private class ConstraintItemListener
+This inner class implements ItemListener. This is used for the constraint selection thingy (aka. Choice).
+
+#### private class ConstraintTFActionListener
+This inner class implements ActionListener. This is used to get the entered value for the capacity or weight
+
+#### private class SelectedAlgorithmItemListener
+This inner class implements ItemListener. This is used to get the selected algorithm.
+
 ### 5. TestScript.java
 This is the general script for testing the other classes. This program includes several testing features so that the user/programmer doesn't need to manually write codes to perform tests.
 Some useful codes are also included here.
 
-The main part includes the codes to use all the assets as well as displaying the graphics. For the algorithm part, just copy and past the codes indicated with **// COP** and **// CSP**
-
 All you need to do is just edit, compile and run this file and add on stuff if you want to.
+
+The main part includes the codes to use all the assets as well as displaying the graphics. For the algorithm part, just copy and past the codes indicated with **// COP** and **// CSP**
 
 #### private static void test_stationDictionary(CityMap map, String lookup_name)
 #### private static void test_stationDictionary(CityMap map, String[] lookup_names)
