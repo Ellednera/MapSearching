@@ -1,3 +1,12 @@
+19 MAY 2021
+- Add all the listeners needed for the GUI components.
+- The screen can now paint the chosen path determined by the algorithm
+- Rearranged the remote comtrol's components :)
+- Moved the screen dimension into Screen, so no more setting the screen size manually
+- Fixed the CSP algorithm, it is now showing the correct path (most likely)
+- Updated the TestScript
+- Changed the details of company station to cw with the name of CW
+
 18 MAY 2021
 - Modified the layout of the GUI a bit and added some more components
 - Added the logic ie. event listeners for most of the components (buttons, text field, list)
