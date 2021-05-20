@@ -1,3 +1,8 @@
+20 MAY 2021
+- Added more stations and changed some colors
+- Tweaked the GUI a little bit
+- Added more description to TestScript::main
+
 19 MAY 2021
 - Add all the listeners needed for the GUI components.
 - The screen can now paint the chosen path determined by the algorithm
