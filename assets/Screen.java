@@ -61,9 +61,10 @@ public class Screen extends Frame {
 	
 	// the actual GUI ie the Screen
 	public void renderGraphics() {
-		setBounds(300, 100, 690, 530);
+		setBounds(300, 100, 688, 530);
 		setBackground(Color.PINK);
 		setLayout(null);
+		//setResizable(false);
 
 		Panel stationListLabelPanel = renderStationListLabel();
 		Panel stationListPanel = renderStationList();
@@ -261,7 +262,7 @@ public class Screen extends Frame {
 							connectedStation.x +stationRadius , connectedStation.y +stationRadius);
 				
 				// distance
-				g.setColor(Color.MAGENTA);
+				g.setColor( new Color(121, 9, 143) );
 				g.drawString(String.valueOf(station.distanceFrom(connectedStation)), 
 						(station.x + connectedStation.x)/2, (station.y + connectedStation.y)/2);
 			}
@@ -274,13 +275,13 @@ public class Screen extends Frame {
 			// circles
 			for (int i=0; i < chosenPath.length; i++) {
 				// chosen circles
-				g.setColor(new Color(200, 130, 90));
+				g.setColor(new Color(144, 78, 230));
 				g.fillOval(chosenPath[i].x, chosenPath[i].y, stationDiameter, stationDiameter);
 			}
 			
 			for (int i=1; i < chosenPath.length; i++) {
 				// road
-				g.setColor(new Color(255, 130, 90));
+				g.setColor(new Color(144, 78, 230));
 				g.drawLine(chosenPath[i-1].x + stationRadius, chosenPath[i-1].y +stationRadius, 	
 							chosenPath[i].x +stationRadius , chosenPath[i].y +stationRadius);
 			}

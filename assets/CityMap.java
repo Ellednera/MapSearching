@@ -24,6 +24,12 @@ public class CityMap {
 		Station w2 = new Station(350, 350, "W2"); // warehouse
 		Station a1 = new Station(460, 100, "A1"); // airport
 		Station p1 = new Station(380, 50, "P1"); // port
+		Station r1 = new Station(350, 250, "R1"); // river ?
+		Station r2 = new Station(435, 367, "R2");
+		Station r3 = new Station(300, 445, "R3");
+		Station m1 = new Station(100, 330, "M1"); // mall
+		Station m2 = new Station(145, 430, "M2");
+		Station q1 = new Station(25, 460, "Q1"); // ...
 		
 		// assume that all connections are bi-directional
 		// uncomment the following to see them appear in the gps screen :)
@@ -41,15 +47,25 @@ public class CityMap {
 				  h1.connectTo(h3, 8); createBridges(h1, h3);
 				  			   h3.connectTo(f1, 8); createBridges(h3, f1);
 		
-		// the challenging part :)
 		cw.connectTo(w2, 4); createBridges(cw, w2);
 				  w2.connectTo(h3, 15); createBridges(w2, h3);
 				  			   h3.connectTo(w1, 5); createBridges(h3, w1);
 				  			   h3.connectTo(f1, 9); createBridges(h3, f1);
-		// for testing purposes
+		
 		cw.connectTo(w1, 11); createBridges(cw, w1);
 		cw.connectTo(h3, 4); createBridges(cw, h3);
 				  h3.connectTo(w1, 9);
+		
+		cw.connectTo(r1, 5); createBridges(cw, r1);
+					 r1.connectTo(r2, 9); createBridges(r1, r2);
+					 			  r2.connectTo(r3, 10); createBridges(r2, r3);
+		cw.connectTo(r3, 12); createBridges(cw, r3);
+					 r3.connectTo(m1, 16); createBridges(r3, m1);
+					 			  m1.connectTo(q1, 8); createBridges(m1, q1);
+					 r3.connectTo(m2, 11); createBridges(r3, m2);
+					 			  m2.connectTo(q1, 5); createBridges(m2, q1);
+		cw.connectTo(q1, 20); createBridges(cw, q1);
+		
 	}
 	/*
 	public void createBridges(Station s1, final Station s2, final Station s3) {
