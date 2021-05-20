@@ -11,15 +11,17 @@ public class TestScript {
 		GPS gps = new GPS();
 		// List in java.util and java.awt conflicts
 		ArrayList<java.util.List<Station>> partialNetworks =  mapA.processPartialNetwork(true);
-		ArrayList<java.util.List<Station>> fullPaths = mapA.processFullNetwork(partialNetworks, 5, false);
+		ArrayList<java.util.List<Station>> fullPaths = mapA.processFullNetwork(partialNetworks, 5, false); // don't changed the number 5, allowed to increase it but not too much
 
 		// Show GUI after processing the full paths
 		Screen GPS_Screen = new Screen();
 		GPS_Screen.sendMap(mapA);
 		GPS_Screen.renderGraphics(); // only stations connected using CityMap::connectBridges will be drawn
 				
-		System.out.println("Screen rendering complete!");
+		System.out.println("Screen rendering complete!"); // remove this if necessary
 		
+		// wait for the details in gui to be filled
+		// the screen is instance use only, so we need to terminate everything for every search :)
 		while (!GPS_Screen.infoIsAssumedComplete) {
 			try {
 				System.out.println("Screen info is not complete, waiting for another 5 seconds...");
@@ -29,12 +31,14 @@ public class TestScript {
 			}
 		}
 		
-		System.out.println("Screen info is complete, procedding to the algorithm\n");
+		System.out.println("Screen info is complete, procedding to the algorithm\n"); // remove if necessary
 		
-		int constraintData = GPS_Screen.getConstraintData();
-		String constraintChoice = GPS_Screen.getConstraintChoice().toLowerCase();
-		String selectedAlgorithm = GPS_Screen.getSelectedAlgorithm();
+		// get data from the gui
+		int constraintData = GPS_Screen.getConstraintData(); // actual capacity or the weight 
+		String constraintChoice = GPS_Screen.getConstraintChoice().toLowerCase(); // Either "Capacity" or "Weight"
+		String selectedAlgorithm = GPS_Screen.getSelectedAlgorithm(); // Either "CSP" or "COP"
 		
+		// ignore this part, it will go into the report or in the documentation
 		// Restrictions
 		// 1. No loops!
 		// 2. All selected stations must be based on the map, fooling around will cause the program to fail/give strange output
@@ -50,7 +54,9 @@ public class TestScript {
 		//stationNames.add( mapA.stationDictionary.get("C") );
 		 */
 		// C -> W2 -> H3 -> F1 is guaranteed to work for CSP
-		// For COP, choose ant station that seem farthest away to get some correct fascinating results
+
+		// For COP, choose any station that seem farthest away to get some correct fascinating results
+		// getting everything ready
 		ArrayList<Station> stationNames = GPS_Screen.getSelectedStations();
 		
 		ArrayList<java.util.List<Station>> availablePaths;
@@ -59,6 +65,7 @@ public class TestScript {
 		String destination = stationNames.get( stationNames.size()-1 ).name;
 		availablePaths = mapA.showAvailablePaths(start, destination, fullPaths, false, constraintData, false); // 10 is the capacity
 		
+		// start routing based on the algorithm chosen
 		if (selectedAlgorithm == "CSP") {
 			// CSP
 			
