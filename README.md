@@ -6,6 +6,8 @@ Structure of the files:
  - ./assets/CityMap.java
  - ./assets/GPS.java
  - ./TestScript.java - can be run independently, this is used to test the GUI and includes examples of how to use the algorithms
+ - ./CSPBenchmark.java - benchmark for CSP
+ - ./COPBenchmark.java - benchmark for COP
 
 ## Classes & Methods
 ### 1. assets::Station
