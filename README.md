@@ -1,10 +1,11 @@
 # JADE-Cars MapSearching
-Codes and assets for search algorithms. The codes here are meant to suite the project. For the stand-alone codes, see [MapSearching](https://github.com/Ellednera/MapSearching)
+Codes and assets for search algorithms. The codes here are meant to suite the project based on the Eclipse IDE. For the stand-alone codes, see [MapSearching](https://github.com/Ellednera/MapSearching) (the original codes were written and compilled manually and not developed under Eclipse)
 
 Structure of the files:
  - ./assets/Station.java
  - ./assets/CityMap.java
  - ./assets/GPS.java
+ - ./assets/Screen.java
  - ./TestScript.java - can be run independently, this is used to test the GUI and includes examples of how to use the algorithms
  - ./CSPBenchmark.java - benchmark for CSP
  - ./COPBenchmark.java - benchmark for COP
