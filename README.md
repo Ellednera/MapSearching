@@ -126,6 +126,13 @@ public class Synopsis {
 }
 ```
 
+## GUI on Different Platforms
+### On Windows 10
+![GUI under Windows 10](https://github.com/JADE-Cars/JADE-Cars-MapSearching/blob/main/images/gui_windows10.png)
+
+### On Linux Mint 20
+![GUI under Linux Mint 20](https://github.com/JADE-Cars/JADE-Cars-MapSearching/blob/main/images/gui_linuxMint20.png)
+
 ## Classes & Methods
 ### 1. assets::Station
 #### Station(int x, int y, String name)
