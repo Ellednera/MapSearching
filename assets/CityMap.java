@@ -32,30 +32,34 @@ public class CityMap {
 		Station q1 = new Station(25, 460, "Q1"); // ...
 		
 		// assume that all connections are bi-directional
-		// uncomment the following to see them appear in the gps screen :)
+		// however the searching algorightms don't care about it :)
 		
+		// top right corner
 		cw.connectTo(s1, 2); createBridges(cw, s1);
 		  s1.connectTo(h4, 1); createBridges(s1, h4);
 					   h4.connectTo(h5, 2); createBridges(h4, h5);
 					   h4.connectTo(h6, 4); createBridges(h4, h6);
 					   				h6.connectTo(p1, 5); createBridges(h6, p1);
 					   							 p1.connectTo(a1, 3); createBridges(p1, a1);
-
+		// top left corner
 		cw.connectTo(h1, 3); createBridges(cw, h1);
-				  h1.connectTo(h2, 3); createBridges(h1, h2);
-				  			   h2.connectTo(w1, 6); createBridges(h2, w1);
-				  h1.connectTo(h3, 8); createBridges(h1, h3);
-				  			   h3.connectTo(f1, 8); createBridges(h3, f1);
-		
+				     h1.connectTo(h2, 3); createBridges(h1, h2);
+				  			      h2.connectTo(w1, 6); createBridges(h2, w1);
+				     h1.connectTo(h3, 8); createBridges(h1, h3);
+				  			      h3.connectTo(f1, 8); createBridges(h3, f1);
+
 		cw.connectTo(w2, 4); createBridges(cw, w2);
-				  w2.connectTo(h3, 15); createBridges(w2, h3);
-				  			   h3.connectTo(w1, 5); createBridges(h3, w1);
-				  			   h3.connectTo(f1, 9); createBridges(h3, f1);
+				     w2.connectTo(h3, 15); createBridges(w2, h3);
+				  			      h3.connectTo(w1, 5); createBridges(h3, w1);
+				  			      h3.connectTo(f1, 9); createBridges(h3, f1);
 		
 		cw.connectTo(w1, 11); createBridges(cw, w1);
+			         w1.connectTo(h2, 6); createBridges(w1, h2);
+
 		cw.connectTo(h3, 4); createBridges(cw, h3);
-				  h3.connectTo(w1, 9);
-		
+				     h3.connectTo(w1, 9);
+
+		// bottom part		
 		cw.connectTo(r1, 5); createBridges(cw, r1);
 					 r1.connectTo(r2, 9); createBridges(r1, r2);
 					 			  r2.connectTo(r3, 10); createBridges(r2, r3);
