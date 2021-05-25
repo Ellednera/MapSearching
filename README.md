@@ -7,7 +7,7 @@ assets - for creating a map, gps and screen (some sort of a simulation)
 1.0
 
 ## Description
-Codes and assets for search algorithms. The codes here are meant to suite the project based on the Eclipse IDE. For the stand-alone codes, see [MapSearching](https://github.com/Ellednera/MapSearching) (the original codes were written and compilled manually and not developed under Eclipse)
+Codes and assets for search algorithms. The codes here are meant to suite the project based on the Eclipse IDE and was coded under Windows 10. For the stand-alone codes, see [MapSearching](https://github.com/Ellednera/MapSearching) (the original codes were written and compilled manually and not developed under Eclipse)
 
 Structure of the files:
  - ./assets/Station.java
