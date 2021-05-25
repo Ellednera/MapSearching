@@ -33,7 +33,6 @@ More text :)
 #### public Map<Station, Integer> allConnections()
 Returns the whole list of connections from this station to all other stations, if any
 
-
 This method is called by *showDetails()*
 
 #### public String toString()
@@ -47,10 +46,12 @@ Calls *toString()* and adds on more details
 #### public CityMap()
 The default constructor. This will set and connect all the Stations. You can also add-on connections if you want to :)
 
-The number of layers by default is now 5 instaed of 3
+The number of layers to pass to asset::CityMap::processFullNetwork is 5
 
 #### public void createBridges(Station s1, Station s2)
 Connects 2 *Stations* in one go. This is the minimum stations that can be connected.
+
+This means that the stations are bi-directional. However, this is not taken into consideration during the route searching process :)
 
 #### private void updateStationRecord(Station s1, Station s2)
 This method will be called by the *createBridges* method. The record is needed for the actual searching based on user input.
