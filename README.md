@@ -1,4 +1,12 @@
 # JADE-Cars MapSearching
+
+## Name
+assets - for creating a map, gps and screen (some sort of a simulation)
+
+## Version
+1.0
+
+## Description
 Codes and assets for search algorithms. The codes here are meant to suite the project based on the Eclipse IDE. For the stand-alone codes, see [MapSearching](https://github.com/Ellednera/MapSearching) (the original codes were written and compilled manually and not developed under Eclipse)
 
 Structure of the files:
@@ -10,6 +18,114 @@ Structure of the files:
  - ./CSPBenchmark.java - benchmark for CSP
  - ./COPBenchmark.java - benchmark for COP
 
+## Synopsis
+Below are the codes to make everything work, most of the methods not shown here can be called manually
+```java
+import assets.*;
+
+import java.util.*;
+
+public class Synopsis {
+	
+	public static void main (String args[]) {
+		
+		// Set up the map and gps
+		CityMap mapA = new CityMap();
+		GPS gps = new GPS();
+		
+		// process and get ready all the paths
+		// "List" in java.util and java.awt conflicts
+		ArrayList<java.util.List<Station>> partialNetworks =  mapA.processPartialNetwork(true);
+		ArrayList<java.util.List<Station>> fullPaths = mapA.processFullNetwork(partialNetworks, 5, false); // don't changed the number 5, allowed to increase it but not too much
+	
+		// Show GUI after processing the full paths
+		Screen GPS_Screen = new Screen();
+		GPS_Screen.sendMap(mapA);
+		GPS_Screen.renderGraphics(); // only stations connected using CityMap::connectBridges will be drawn
+				
+		System.out.println("Screen rendering complete!");
+		
+		// wait for the details in gui to be filled
+		// the screen is instance use only, so we need to terminate everything for every search :)
+		while (!GPS_Screen.infoIsAssumedComplete) {
+			try {
+				System.out.println("Screen info is not complete, waiting for another 5 seconds...");
+				Thread.sleep(5000);
+			} catch (Exception e) {
+				break;
+			}
+		}
+		
+		System.out.println("Screen info is complete, procedding to the algorithm\n"); // remove if necessary
+		
+		// get data from the gui
+		int constraintData = GPS_Screen.getConstraintData(); // actual capacity or the weight 
+		String constraintChoice = GPS_Screen.getConstraintChoice().toLowerCase(); // Either "Capacity" or "Weight"
+		String selectedAlgorithm = GPS_Screen.getSelectedAlgorithm(); // Either "CSP" or "COP"
+	
+		// For COP, choose any station that seem farthest away to get some correct fascinating results
+		// getting everything ready
+		ArrayList<Station> stationNames = GPS_Screen.getSelectedStations();
+		
+		ArrayList<java.util.List<Station>> availablePaths;
+	
+		String start = stationNames.get(0).name;
+		String destination = stationNames.get( stationNames.size()-1 ).name;
+		availablePaths = mapA.showAvailablePaths(start, destination, fullPaths, false, constraintData, false); // 10 is the capacity
+		
+		// start routing based on the algorithm chosen
+		if (selectedAlgorithm == "CSP") {
+			
+			Station[] chosenPath_CSP = gps.findChosenPath(availablePaths, stationNames, constraintData);
+			
+			if (chosenPath_CSP != null) {
+				
+				// to draw the chosen path on the screen
+				GPS_Screen.setChosenPathToHighlight(chosenPath_CSP);
+				
+				System.out.println("Showing the path to use (CSP)...");
+				for (int i=0; i <= chosenPath_CSP.length - 1; i++) {
+					System.out.print(chosenPath_CSP[i]);
+					if (i != chosenPath_CSP.length - 1) {
+						System.out.print(", ");
+					}
+				}
+			} else {
+				System.out.println("No path found, make sure your " + constraintChoice +" is big enough");
+				System.out.println("And also make sure that you're not returning back to CW or intersecting it");
+				System.out.println("Or it's just that the system encountered a loop and died :)");
+			}
+			System.out.println("\n");
+			
+		} else if (selectedAlgorithm == "COP") {
+	
+			Station[] chosenPath_COP = gps.findChosenPath(availablePaths, start, destination);
+			
+			if (chosenPath_COP != null && constraintData > 0) {
+				
+				// to draw the chosen path on the screen
+				GPS_Screen.setChosenPathToHighlight(chosenPath_COP);
+				
+				System.out.println("Showing the shortest path(COP):");
+				for (int i=0; i<chosenPath_COP.length; i++) {
+					System.out.print(chosenPath_COP[i].name);
+					if (i != chosenPath_COP.length - 1) {
+						System.out.print(", ");
+					}
+				}
+				System.out.println("");	
+			} else {
+				System.out.println("No path found, make sure your " + constraintChoice +" is big enough");
+				System.out.println("And also make sure that you only select the starting and destination stations only");
+			}
+			System.out.println("\n");
+			
+		}
+		
+	}
+}
+```
+
 ## Classes & Methods
 ### 1. assets::Station
 #### Station(int x, int y, String name)
@@ -17,7 +133,6 @@ The constructor to create a new *Station*, x and y are the location to be drawn 
 
 #### public void connectTo(Station s, int distance)
 Connects the current *Station* to another *Station*. This eliminates the need of an edge. *Station* is the vertex :)
-
 
 Whenever a *Station* is connected to this current station, both *Station*'s connections list will be updated. This works because a *Station* must be passed in and therefore both station's infomation can be obatin in one go
 
