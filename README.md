@@ -1,10 +1,10 @@
 # JADE-Cars MapSearching
 
 ## Name
-assets - for creating a map, gps and screen (some sort of a simulation)
+assets - for creating maps, gps and screen (some sort of a simulation)
 
 ## Version
-1.0
+1.0.0
 
 ## Description
 Codes and assets for search algorithms. The codes here are meant to suite the project based on the Eclipse IDE and was coded under Windows 10. For the stand-alone codes, see [MapSearching](https://github.com/Ellednera/MapSearching) (the original codes were written and compilled manually and not developed under Eclipse)
@@ -328,7 +328,7 @@ Some useful codes are also included here.
 
 All you need to do is just edit, compile and run this file and add on stuff if you want to.
 
-The main part includes the codes to use all the assets as well as displaying the graphics. For the algorithm part, just copy and past the codes indicated with **// COP** and **// CSP**
+The main part includes the codes to use all the assets as well as displaying the graphics.
 
 #### private static void test_stationDictionary(CityMap map, String lookup_name)
 #### private static void test_stationDictionary(CityMap map, String[] lookup_names)
