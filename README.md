@@ -19,7 +19,7 @@ Structure of the files:
  - ./COPBenchmark.java - benchmark for COP
 
 ## Synopsis
-Below are the codes to make everything work, most of the methods not shown here can be called manually
+Below are the codes to make everything work, most of the methods not shown here can be called manually (they are shown in each individual class' synopsis, if any)
 ```java
 import assets.*;
 
@@ -135,6 +135,62 @@ public class Synopsis {
 
 ## Classes & Methods
 ### 1. assets::Station
+
+#### Synopsis
+```java
+import assets.Station;
+import java.util.*;
+
+...
+
+Station home = new Station(30, 50, "Home");
+Station mall = new Station(100, 100, "Mall");
+Station airport = new Station(500, 500, "Airport");
+
+home.connectTo(mall, 50);
+mall.connectTo(home, 5);
+mall.connectTo(airport, 25);
+
+// connections are bi-directional by default
+System.out.println("Home<->mall: " + home.isConnectedTo(mall));
+System.out.println("Mall<->Home: " + mall.isConnectedTo(home));
+
+System.out.println("Airport<->Mall: " + airport.isConnectedTo(mall));
+
+// indirect connections can't be processed, see CityMap
+System.out.println("Home<->Airoport: " + home.isConnectedTo(airport));
+
+System.out.println("d(Home<->Mall)=" + home.distanceFrom(mall));
+System.out.println("d(Mall<->Home)=" + mall.distanceFrom(home));
+System.out.println("d(Airport->Mall)=" + airport.distanceFrom(mall));
+
+// indirect connections can't be processed, see CityMap
+try {
+	System.out.println("d(Home->Airport)=" + home.distanceFrom(airport));
+} catch (NullPointerException e) {
+	System.out.println("Home is not directly connect to the airport.");
+}
+
+System.out.println("");
+
+home.verbose_distanceFrom(mall);
+airport.verbose_distanceFrom(mall);
+
+// indirect connections can't be processed, see CityMap
+try {
+	home.verbose_distanceFrom(airport); // error
+} catch (NullPointerException e) {
+	System.out.println("Home is not directly connect to the airport.");
+}
+
+System.out.println("");
+
+// show the details of each station's connections
+home.showDetails();
+mall.showDetails();
+airport.showDetails();
+```
+
 #### Station(int x, int y, String name)
 The constructor to create a new *Station*, x and y are the location to be drawn on the screen and have nothing to do with the distance in *CityMap::createBridges*
 
@@ -165,7 +221,47 @@ Calls *toString()* and adds on more details
 
 
 ### 2. assets::CityMap
-#### public CityMap()
+
+#### Synopsis
+```java
+import assets.Station;
+import asets.CityMap;
+import java.util.*;
+
+...
+
+// create maps
+CityMap firstMap = new CityMap();
+CityMap secondMap = new CityMap();
+
+// add on stations to second map
+Station home = new Station(30, 50, "Home");
+Station mall = new Station(100, 100, "Mall");
+Station airport = new Station(500, 500, "Airport");
+
+home.connectTo(mall, 50);    secondMap.createBridges(home, mall);
+mall.connectTo(home, 5);     secondMap.createBridges(mall, home); // this will cause a loop
+mall.connectTo(airport, 25); secondMap.createBridges(mall, airport);
+
+// link all the connections
+System.out.println("First map's partial network:");
+ArrayList<List<Station>> firstMapPartialNetwork = firstMap.processPartialNetwork(true);
+
+System.out.println("");
+
+System.out.println("Second map's partial network:");
+ArrayList<List<Station>> secondMapPartialNetwork = secondMap.processPartialNetwork(true);
+
+// the number 5 is the minimum iterations needed to link all the default stations
+ArrayList<List<Station>> secondMapFullNetwork 
+	= secondMap.processFullNetwork(secondMapPartialNetwork, 5, false);
+
+// capacity of 3 will exclude the starting destination (Home)
+ArrayList<List<Station>> pathsFromHomeToAirport = secondMap.showAvailablePaths("Home", "Airport", secondMapFullNetwork, false, 4, false);
+System.out.println(pathsFromHomeToAirport); // a lot of redundant paths
+```
+
+#### CityMap()
 The default constructor. This will set and connect all the Stations. You can also add-on connections if you want to :)
 
 The number of layers to pass to asset::CityMap::processFullNetwork is 5
@@ -234,7 +330,7 @@ Draws all the connected stations and the details on the screen. The map might be
 This class extends the **Frame** class and is used by **GPS**. The graphics is generated using java.awt.
 This class should be made into a local variable inside assets::GPS, but anyway
 
-#### public Screen ()
+#### Screen ()
 This sets the title/name of the program and overrides the following listeners:
  - mousePressed(MouseEvent e)
    - to cause the map to be redrawn if the gui window is minimized and open again
@@ -249,7 +345,7 @@ This method will process the iterator of all the values of CityMap's stationDict
 Renders the display. The city map will be drawn.
 
 #### private Panel renderStationListLabel()
-Create the panel for the label with the text "\~~STATION LIST\~~" at the top right corner of the screen
+Create the panel for the label with the text \~\~STATION LIST\~\~ at the top right corner of the screen
 
 #### private Panel renderStationList()
 Creates the panel for the list of station names. This is a selection box
