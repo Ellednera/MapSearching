@@ -2,6 +2,7 @@
 - Changed the constructor of Station to public
 - Add synopses for some of the Station and CityMap classes
 - Made minor corrections to README
+- Added a RELEASENOTES file to keep track of the releases
 
 26 MAY 2021
 - Created the jar file assets v1.0.0
@@ -76,4 +77,6 @@
 
 
 28 APRIL 2021 and beyond :)
+- Created some of the classes
 - Updated Station.java and some other files
+- Forked the proginal codes into Jade-Cars' repo
