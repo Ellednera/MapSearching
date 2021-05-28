@@ -3,6 +3,7 @@
 - Add synopses for some of the Station and CityMap classes
 - Made minor corrections to README
 - Added a RELEASENOTES file to keep track of the releases
+- Renamed CHANGELOG (this file) to EVENTLOG to avoid confussion with the RELEASENOTES
 
 26 MAY 2021
 - Created the jar file assets v1.0.0
