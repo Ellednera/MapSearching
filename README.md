@@ -148,7 +148,7 @@ Station mall = new Station(100, 100, "Mall");
 Station airport = new Station(500, 500, "Airport");
 
 home.connectTo(mall, 50);
-mall.connectTo(home, 5);
+mall.connectTo(home, 50); // an explicit loop, be careful
 mall.connectTo(airport, 25);
 
 // connections are bi-directional by default
@@ -156,6 +156,7 @@ System.out.println("Home<->mall: " + home.isConnectedTo(mall));
 System.out.println("Mall<->Home: " + mall.isConnectedTo(home));
 
 System.out.println("Airport<->Mall: " + airport.isConnectedTo(mall));
+System.out.println("Mall<->Airport: " + mall.isConnectedTo(airport));
 
 // indirect connections can't be processed, see CityMap
 System.out.println("Home<->Airoport: " + home.isConnectedTo(airport));
