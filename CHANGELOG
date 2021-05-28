@@ -1,3 +1,8 @@
+28 MAY 2021
+- Changed the constructor of Station to public
+- Add synopses for some of the Station and CityMap classes
+- Made minor corrections to README
+
 26 MAY 2021
 - Created the jar file assets v1.0.0
 
