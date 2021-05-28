@@ -2,13 +2,13 @@ package assets;
 
 import java.util.*;
 
-public class Station {
+public class Station implements java.io.Serializable {
 	public int x;
 	public int y;
 	public String name;
 	private Map<Station, Integer> connections = new HashMap<Station, Integer>();
 	
-	Station(int x, int y, String name) {
+	public Station(int x, int y, String name) {
 		this.x = x;
 		this.y = y;
 		this.name = name;
