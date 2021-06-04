@@ -133,6 +133,35 @@ public class Synopsis {
 ### On Linux Mint 20
 ![GUI under Linux Mint 20](https://github.com/JADE-Cars/JADE-Cars-MapSearching/blob/main/images/gui_linuxMint20.png)
 
+#### How it Works?
+- THE GUI IS INSTANCE USE. SO, EVERY TIME A SEARCH IS DONE, YOU'LL NEED TO TERMINATE EVERYTHING AND START AGAIN :)
+- The \~\~STATION LIST\~\~ is the list of stations that you can choose. By default, CW is already selected. The selected station names will be displayed on the console.
+- After selecting all your desired stations, click "Register Route", this will display all the stations selected according to sequence at the bottom of the screen (with purple background). You can also click the "Register Route" button every time you select a station.
+- The "Clear Route" button will remove all selected stations, but the default CW station will remain. CW is assummed to be the company+warehouse. The W of CW has nothing to do with other W* stations :)
+- The constraint select box is for you to specify either to use the capacity or weight.
+  - At the right side of the constraint box is an input field, make sure that you specify a big number to allow all the possible routes to be processed. **Remember to hit the ENTER button after entering  the value**, it will be disabled after that (the color becomes lighter)
+- The algorithm part is for you to select either CSP or COP for the search
+- The "Route" button will finally process the information entered and the search starts.
+#### Do
+- Enter every field and chose every option that can be chosen
+- Enter an appropriate value (not too big or too small) for the capacity or the weight to allow the searching algorithms to work correctly :)
+- Make sure that you hit the ENTER key after entering the value for the constraint (either capacity or weight). The constraint value field will be disabled after the ENTER is hit.
+- Click on the screen (anywhere in the pink area) if the original map (with green stations) disappear after the chosen route is highlighted or when the GUI is minimized and maximized again. 
+
+#### Don't
+- Don't ever ever ever ever press the SPACEBAR right after clicking any buttons. The buttons include "Register Route", "Clear Route", and "Route" buttons.
+- Don't try to press the "X" button of the GUI, that part was not implemented on purpose :)
+
+#### Other things to take note of
+- It is advisable to make sure that the number of stations (green dots) chosen follows the following:
+  - For **CSP**, make sure **not to create a loop**. This algorithm should be able to take in any number of stations.
+    - The station roads might be bi-directional, but the routing algorithms don't care about that :)
+  - For **COP**, make sure you **only** choose the **starting and destination stations**.
+  - If it is obvious that your chosen path is correct and the searching algorithm should work, but the system terminates or can't produce any route, try again, it has something to do with the way the algorithms are coded
+- Entering a huge value for the constraint might cause the algorithm to go wrong :)
+- Not following the above instructions will most likely end up with strange or fascinating routes :) Sometimes the results are still correct
+- The two algorithms have some randomness in them.
+
 ## Classes & Methods
 ### 1. assets::Station
 
