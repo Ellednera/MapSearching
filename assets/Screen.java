@@ -24,7 +24,7 @@ public class Screen extends Frame {
 	private Choice constraint = new Choice();
 	private Choice algorithmMenu = new Choice();
 	
-	private int constraintData;
+	// private int constraintData; // not needed, directly taken from constraintTF textfield
 	private String constraintChoice;
 	private String selectedAlgorithm;
 	
@@ -49,7 +49,9 @@ public class Screen extends Frame {
 		// stationList.addItemListener( new ListListener() ); // this must go into renderStationList()
 		selectedStationNames.add("CW");
 		
-		constraintTF.addActionListener( new ConstraintTFActionListener() ); // disable it by hitting enter key
+		// not needed anymore
+		// constraintTF.addActionListener( new ConstraintTFActionListener() ); // disable it by hitting enter key
+		
 		constraint.addItemListener( new ConstraintItemListener() );
 		algorithmMenu.addItemListener( new SelectedAlgorithmItemListener() );
 	}
@@ -211,12 +213,13 @@ public class Screen extends Frame {
 		repaint();
 	}
 	
-	public int getConstraintData() {
-		return constraintData;
-	}
-	
+	// reordered these two
 	public String getConstraintChoice() {
 		return constraintChoice;
+	}
+	
+	public int getConstraintData() {
+		return Integer.parseInt( constraintTF.getText() );
 	}
 	
 	public String getSelectedAlgorithm() {
@@ -234,6 +237,17 @@ public class Screen extends Frame {
 		}
 		
 		return selectedStations; 
+	}
+	
+	public Object[] getAllScreenInput() {
+		ArrayList<Object> allScreenInput = new ArrayList<Object>();
+		
+		allScreenInput.add(getConstraintChoice());
+		allScreenInput.add(getConstraintData());
+		allScreenInput.add(getSelectedAlgorithm());
+		allScreenInput.add(getSelectedStations());
+		
+		return allScreenInput.toArray(new Object[4]);
 	}
 	
 	public void paint(Graphics g) {
@@ -309,6 +323,9 @@ public class Screen extends Frame {
 				System.out.println("Route button pressed");
 				infoIsAssumedComplete = true;
 				
+				// testing TF without enter key, it works!
+				// System.out.println("Got the textfield's data without enter key: " + constraintTF.getText());
+				
 			} else if (someButton.getActionCommand() == "register route") {
 				
 				System.out.println("Register route button pressed");
@@ -352,16 +369,17 @@ public class Screen extends Frame {
 		}
 	}
 	
+	@Deprecated
 	private class ConstraintTFActionListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			//System.out.println("Enter key pressed for constraint text field!");
+			System.out.println("ConstraintTFActionListener() is deprecated and useless by now. The constraint data doesn't require the ENTER key anymore");
 			TextField constraintTF = (TextField) e.getSource();
 			constraintTF.setEnabled(false);
-			constraintData = Integer.parseInt( constraintTF.getText() );
+			int constraintData = Integer.parseInt( constraintTF.getText() );
 			System.out.println("Constraint data: " + constraintData);
 		}
-	}
-	
+	}	
 	
 	private class SelectedAlgorithmItemListener implements ItemListener {
 		public void itemStateChanged(ItemEvent e) {
