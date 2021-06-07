@@ -34,31 +34,22 @@ public class TestScript {
 		System.out.println("Screen info is complete, procedding to the algorithm\n"); // remove if necessary
 		
 		// get data from the gui
+		// do this
+		Object[] guiData = GPS_Screen.getAllScreenInput();
+		for (int i=0; i<guiData.length; i++) {
+			System.out.println("Index: " + i + "=" + guiData[i]);
+		}
+		
+		// or these 4 steps
 		int constraintData = GPS_Screen.getConstraintData(); // actual capacity or the weight 
 		String constraintChoice = GPS_Screen.getConstraintChoice().toLowerCase(); // Either "Capacity" or "Weight"
 		String selectedAlgorithm = GPS_Screen.getSelectedAlgorithm(); // Either "CSP" or "COP"
-		
-		// ignore this part, it will go into the report or in the documentation
-		// Restrictions
-		// 1. No loops!
-		// 2. All selected stations must be based on the map, fooling around will cause the program to fail/give strange output
-		
-		// Rules
-		// 1. station names(start and destination) specified in stationNames.add() and mapA.showAvailablePaths() must match ie the same!
-		/*
-		ArrayList<Station> stationNames = new ArrayList<Station>(); // this part is based on the user input, hard-code for the moment :)
-		stationNames.add( mapA.stationDictionary.get("C") );
-		stationNames.add( mapA.stationDictionary.get("W2") );
-		stationNames.add( mapA.stationDictionary.get("H3") );
-		stationNames.add( mapA.stationDictionary.get("F1") ); // these 4 are actual valid paths
-		//stationNames.add( mapA.stationDictionary.get("C") );
-		 */
-		// C -> W2 -> H3 -> F1 is guaranteed to work for CSP
-
-		// For COP, choose any station that seem farthest away to get some correct fascinating results
-		// getting everything ready
 		ArrayList<Station> stationNames = GPS_Screen.getSelectedStations();
 		
+		// System.out.println("Obtained constraint data without hitting the enter key: " + constraintData);
+		// System.exit(0);
+		
+		// getting everything ready
 		ArrayList<java.util.List<Station>> availablePaths;
 
 		String start = stationNames.get(0).name;
@@ -90,10 +81,6 @@ public class TestScript {
 			}
 			System.out.println("\n");
 		} else if (selectedAlgorithm == "COP") {
-			// COP
-			// limitations: 1. One way only, 
-			// 				2. Cannot be a path that intersects C, it will end up with a reverse and a normal path, will give error
-			// Reason: we're using a HashMap for speed, after all everything will start from C :) Unless the bridges are created manually
 			
 			// to draw the chosen path on the screen
 			Station[] chosenPath_COP = gps.findChosenPath(availablePaths, start, destination);
@@ -118,22 +105,6 @@ public class TestScript {
 			
 		}
 		
-		
-		
-		
-		/*
-		availablePaths = mapA.showAvailablePaths("C", "A1", fullPaths, false, 10, false);
-		chosenPath_COP = gps.findChosenPath(availablePaths, "C", "A1");
-		
-		System.out.println("Showing the shortest path(COP):");
-		for (int i=0; i<chosenPath_COP.length; i++) {
-			System.out.print(chosenPath_COP[i].name);
-			if (i != chosenPath_COP.length - 1) {
-				System.out.print(", ");
-			}
-		}
-		System.out.println("");
-		*/
 	}
 	
 	// these 2 tests can be written in a more efficient way :)
