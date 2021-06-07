@@ -29,6 +29,8 @@ public class Synopsis {
 	
 	public static void main (String args[]) {
 		
+		// This file is not supposed to be uploaded, it's just used for the synopsis part in the documentation
+		
 		// Set up the map and gps
 		CityMap mapA = new CityMap();
 		GPS gps = new GPS();
@@ -59,19 +61,25 @@ public class Synopsis {
 		System.out.println("Screen info is complete, procedding to the algorithm\n"); // remove if necessary
 		
 		// get data from the gui
+		// either do this
+		Object[] guiData = GPS_Screen.getAllScreenInput();
+		// to get all the GUI input
+		for (int i=0; i<guiData.length; i++) {
+			System.out.println("Index: " + i + "=" + guiData[i]);
+		}
+	
+		// or these 4 steps
 		int constraintData = GPS_Screen.getConstraintData(); // actual capacity or the weight 
 		String constraintChoice = GPS_Screen.getConstraintChoice().toLowerCase(); // Either "Capacity" or "Weight"
 		String selectedAlgorithm = GPS_Screen.getSelectedAlgorithm(); // Either "CSP" or "COP"
-	
-		// For COP, choose any station that seem farthest away to get some correct fascinating results
-		// getting everything ready
-		ArrayList<Station> stationNames = GPS_Screen.getSelectedStations();
+		ArrayList<Station> stationNames = GPS_Screen.getSelectedStations(); // the stations selected in the GUI
 		
+		// getting everything ready	
 		ArrayList<java.util.List<Station>> availablePaths;
 	
 		String start = stationNames.get(0).name;
 		String destination = stationNames.get( stationNames.size()-1 ).name;
-		availablePaths = mapA.showAvailablePaths(start, destination, fullPaths, false, constraintData, false); // 10 is the capacity
+		availablePaths = mapA.showAvailablePaths(start, destination, fullPaths, false, constraintData, false);
 		
 		// start routing based on the algorithm chosen
 		if (selectedAlgorithm == "CSP") {
@@ -80,7 +88,7 @@ public class Synopsis {
 			
 			if (chosenPath_CSP != null) {
 				
-				// to draw the chosen path on the screen
+				// draw the chosen path on the screen
 				GPS_Screen.setChosenPathToHighlight(chosenPath_CSP);
 				
 				System.out.println("Showing the path to use (CSP)...");
@@ -103,7 +111,7 @@ public class Synopsis {
 			
 			if (chosenPath_COP != null && constraintData > 0) {
 				
-				// to draw the chosen path on the screen
+				// draw the chosen path on the screen
 				GPS_Screen.setChosenPathToHighlight(chosenPath_COP);
 				
 				System.out.println("Showing the shortest path(COP):");
@@ -139,7 +147,7 @@ public class Synopsis {
 - After selecting all your desired stations, click "Register Route", this will display all the stations selected according to sequence at the bottom of the screen (with purple background). You can also click the "Register Route" button every time you select a station.
 - The "Clear Route" button will remove all selected stations, but the default CW station will remain. CW is assummed to be the company+warehouse. The W of CW has nothing to do with other W* stations :)
 - The constraint select box is for you to specify either to use the capacity or weight.
-  - At the right side of the constraint box is an input field, make sure that you specify a big number to allow all the possible routes to be processed. **Remember to hit the ENTER button after entering  the value**, it will be disabled after that (the color becomes lighter)
+  - At the right side of the constraint box is an input field, make sure that you specify a big number to allow all the possible routes to be processed. Hitting the enter key here will disable it (the color becomes lighter) but it's not necessary
 - The algorithm part is for you to select either CSP or COP for the search
 - The "Route" button will finally process the information entered and the search starts.
 ### Do
@@ -154,8 +162,9 @@ public class Synopsis {
 
 ### Other things to take note of
 - It is advisable to make sure that the number of stations (green dots) chosen follows the following:
-  - For **CSP**, make sure **not to create a loop**. This algorithm should be able to take in any number of stations.
+  - For **CSP**, make sure **not to create a loop**. This algorithm should be able to process any number of stations.
     - The station roads might be bi-directional, but the routing algorithms don't care about that :)
+    - The algorithm might still fail if only 2 stations are provided
   - For **COP**, make sure you **only** choose the **starting and destination stations**.
   - If it is obvious that your chosen path is correct and the searching algorithm should work, but the system terminates or can't produce any route, try again, it has something to do with the way the algorithms are coded
 - Entering a huge value for the constraint might cause the algorithm to go wrong :)
@@ -332,6 +341,7 @@ If **verbose** is set to true, it will display all the available paths. This out
 
 Setting **analyseCapacity** to true will give details about the ignored paths.
 
+
 ### 3. assets::GPS
 #### public Station[] findChosenPath(ArrayList<java.util.List\<Station>> paths_2_filter, String check_start_name, String check_destination_name)
 This is the last processing step. This will chose the shortest path for the Delivery Agent. This only checks for the starting and destination stations.
@@ -356,8 +366,9 @@ This method tries to correct the direction of the chosen path if the filtered pa
 #### public static void drawMap(Station[] stations)
 Draws all the connected stations and the details on the screen. The map might be gone as soon as it leaves the actual computer screen. This can b esolved by clicking the background (pink area) to repaint the map.
 
+
 ### 4. assets::Screen
-This class extends the **Frame** class and is used by **GPS**. The graphics is generated using java.awt.
+This class extends the **Frame** class and is used by **GPS**. The graphics are generated using java.awt.
 This class should be made into a local variable inside assets::GPS, but anyway
 
 #### Screen ()
@@ -418,17 +429,27 @@ This method will be called by *renderGraphics()*
 #### public void setChosenPathToHighlight(Station[] chosenPath)
 This method draw/paints the *chosenPath* on the screen with another color after being determined by any of the algorithm
 
-#### public int getConstraintData()
-This is the actual capacity or the weight
-
 #### public String getConstraintChoice()
 This is the type of constrains selected in the GUI. It's either "Capacity" or "Weight". You might need to do some text transformation (based on your preferences) when dealing with them in the *ConstraintItemListener* inner class
+
+#### public int getConstraintData()
+This is the actual capacity or the weight
 
 #### public String getSelectedAlgorithm()
 This is the name of the algorithm selected in the GUI. It's either "COP" or "CSP". You might need to do some text transformation (based on your preferences) when dealing with them in the *SelectedAlgorithmItemListener* inner class
 
 #### public ArrayList\<Station> getSelectedStations()
 Returns the station selected in the GUI if the "Register Route" button is pressed. It is assumed that when this method is called, the user has actually selected the desired stations and registered them into the system.
+
+#### public Object[] getAllScreenInput()
+Returns all the GUI input in one go as an array of Objects. Casting might be needed based on your usage. The table below shows the index with the corresponding values and return types.
+
+| Index  | Data | Return Type |
+| :-------: | ----: | :----------- |
+| 0 | Constraint | String |
+| 1 | Constraint data | int |
+| 2 | Algorithm | String |
+| 3 | Selected path | ArrayList\<Object\> |
 
 #### public void paint(Graphics g)
 Overriden to draw the stations and the connecting lines as well as the name of the stations.
@@ -443,6 +464,8 @@ This inner classimplements ItemListener. This is used for the station list.
 This inner class implements ItemListener. This is used for the constraint selection thingy (aka. Choice).
 
 #### private class ConstraintTFActionListener
+***! This class is deprecated***
+
 This inner class implements ActionListener. This is used to get the entered value for the capacity or weight
 
 #### private class SelectedAlgorithmItemListener
