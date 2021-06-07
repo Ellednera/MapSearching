@@ -1,3 +1,9 @@
+7 JUNE 2021
+- ConstraintTFActionListener is deprecated, it's pretty much useless by now
+   No need to hit enter for the constraint data text field anymore
+- Reordered Screen::getConstraintChoice() and Screen::getConstraintData()
+- Added another method to obtain all three screen input, see Screen::getAllScreenInput for details
+
 4 JUNE 2021
 - Added more info for the GUI part
 
