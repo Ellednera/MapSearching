@@ -63,10 +63,10 @@ public class Screen extends Frame {
 	
 	// the actual GUI ie the Screen
 	public void renderGraphics() {
-		setBounds(300, 100, 688, 530);
+		setBounds(300, 100, 680, 526);
 		setBackground(Color.PINK);
 		setLayout(null);
-		//setResizable(false);
+		setResizable(false);
 
 		Panel stationListLabelPanel = renderStationListLabel();
 		Panel stationListPanel = renderStationList();
@@ -82,7 +82,7 @@ public class Screen extends Frame {
 	
 	private Panel renderStationListLabel() {
 		Panel stationListPanel = new Panel(); 
-		stationListPanel.setBounds(500, 30, 180, 30);
+		stationListPanel.setBounds(500, 26, 180, 30);
 		stationListPanel.setLayout(new GridLayout(1, 1));
 		stationListPanel.setVisible(true);
 		stationListPanel.setBackground(new Color(220, 220, 220));
@@ -96,7 +96,7 @@ public class Screen extends Frame {
 	
 	private Panel renderStationList() {
 		Panel stationListPanel = new Panel();
-		stationListPanel.setBounds(500, 60, 180, 280);
+		stationListPanel.setBounds(500, 56, 180, 280);
 		stationListPanel.setLayout(new GridLayout(1, 1));
 		stationListPanel.setVisible(true);
 		stationListPanel.setBackground(Color.BLUE);
@@ -134,7 +134,7 @@ public class Screen extends Frame {
 	
 	private Panel renderRegisterRouteButton(Button registerRouteButton, Button clearRouteButton) {
 		Panel registerRouteButtonPanel = new Panel();
-		registerRouteButtonPanel.setBounds(500, 340, 180, 50);
+		registerRouteButtonPanel.setBounds(500, 336, 180, 50);
 		registerRouteButtonPanel.setLayout(new GridLayout(1, 2));
 		registerRouteButtonPanel.setVisible(true);
 		registerRouteButtonPanel.setBackground(Color.GREEN);
@@ -152,7 +152,7 @@ public class Screen extends Frame {
 	
 	private Panel renderDetails(TextField constraintTF, Choice constraint, Choice algorithmMenu) {
 		Panel details = new Panel(); 
-		details.setBounds(500, 390, 180, 60);
+		details.setBounds(500, 386, 180, 60);
 		details.setLayout(new GridLayout(2, 2));
 		details.setVisible(true);
 		details.setBackground(Color.CYAN);
@@ -177,7 +177,7 @@ public class Screen extends Frame {
 	
 	private Panel renderRouteDisplay(TextField routeTF) {
 		Panel routeDisplay = new Panel();
-		routeDisplay.setBounds(8, 500, 680, 25);
+		routeDisplay.setBounds(3, 496, 675, 25);
 		routeDisplay.setLayout(new GridLayout(1, 1));
 		routeDisplay.setVisible(true);
 		routeDisplay.setBackground(Color.YELLOW);
@@ -195,7 +195,7 @@ public class Screen extends Frame {
 	private Panel renderRouteButton(Button routeButton) {
 		
 		Panel routeButtonPanel = new Panel();
-		routeButtonPanel.setBounds(500, 450, 180, 50);
+		routeButtonPanel.setBounds(500, 446, 180, 50);
 		routeButtonPanel.setLayout(new BorderLayout());
 		routeButtonPanel.setVisible(true);
 		routeButtonPanel.setBackground(Color.ORANGE);
@@ -213,7 +213,6 @@ public class Screen extends Frame {
 		repaint();
 	}
 	
-	// reordered these two
 	public String getConstraintChoice() {
 		return constraintChoice;
 	}
