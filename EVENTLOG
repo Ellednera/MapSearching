@@ -1,3 +1,7 @@
+13 JUNE 2021
+- Fixed the layout of the gui, and it is not resizable anymore
+- Made the README look nicer by using conventions, feels like something is still lacking :)
+
 7 JUNE 2021
 - ConstraintTFActionListener is deprecated, it's pretty much useless by now
    No need to hit enter for the constraint data text field anymore
