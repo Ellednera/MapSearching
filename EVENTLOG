@@ -1,0 +1,96 @@
+13 JUNE 2021
+- Fixed the layout of the gui, and it is not resizable anymore
+- Made the README look nicer by using conventions, feels like something is still lacking :)
+
+7 JUNE 2021
+- ConstraintTFActionListener is deprecated, it's pretty much useless by now
+   No need to hit enter for the constraint data text field anymore
+- Reordered Screen::getConstraintChoice() and Screen::getConstraintData()
+- Added another method to obtain all three screen input, see Screen::getAllScreenInput for details
+
+4 JUNE 2021
+- Added more info for the GUI part
+
+28 MAY 2021
+- Changed the constructor of Station to public
+- Add synopses for some of the Station and CityMap classes
+- Made minor corrections to README
+- Added a RELEASENOTES file to keep track of the releases
+- Renamed CHANGELOG (this file) to EVENTLOG to avoid confussion with the RELEASENOTES
+
+26 MAY 2021
+- Created the jar file assets v1.0.0
+
+25 MAY 2021
+- Corrected the top left corner of the map a little bit, the CSP should work better by now
+
+21 MAY 2021
+- Added the benchmarking codes for CSP and COP
+
+20 MAY 2021
+- Added more stations and changed some colors
+- Tweaked the GUI a little bit
+- Added more description to TestScript::main
+
+19 MAY 2021
+- Add all the listeners needed for the GUI components.
+- The screen can now paint the chosen path determined by the algorithm
+- Rearranged the remote comtrol's components :)
+- Moved the screen dimension into Screen, so no more setting the screen size manually
+- Fixed the CSP algorithm, it is now showing the correct path (most likely)
+- Updated the TestScript
+- Changed the details of company station to cw with the name of CW
+
+18 MAY 2021
+- Modified the layout of the GUI a bit and added some more components
+- Added the logic ie. event listeners for most of the components (buttons, text field, list)
+
+17 MAY 2021
+- Overloaded GPS::findChosenPath. The original version is used to check ONLY the starting station and the destination station. 
+  The newer version is used to look for the path that includes the extra stations in between.
+  *Take note: GPS::findChosenPath WITH capacity utilizes the CSP concept, will return null if the selected path is not valid
+              GPS::findChosenPath WITHOUT capacity utilizes the COP concept 
+- Modified the display of the map and relocated quite some stations
+- Added more stuff to the gui (remote control)
+- CityMap::createBridges for 3 stations in one go is not longer available due to some unexpected bridge issues that might occur
+- Due to new stations and connections added, CityMap::processFullNetwork's number of layers should be set to 5
+- TestScript is now more readable :)
+
+7 MAY 2021
+- CityMap::showAvailablePaths now supports checking against capacity
+- Changed Station::toString's return value to resemble the Cartesian coordinates
+- Some more stations were connected in the map by default
+- Screen now displays the distance between stations
+
+5 MAY 2021
+- This was forked into JADE-Cars as some codes in the original MapSearching has been edited to suite the whole project in Eclipse
+- On packaging the codes:
+  1. Station, CityMap, GPS and Screen were packaged under "assets" namespace.
+  2. TestScript.java was left out to be the general script to run and test all the assets
+- Solved the problem with screen going blank after reopening the minimized gui window(if it appears blank, click the screen)
+- Moved the Screen class into another file, Eclipse was complaining about that :)
+  - Added MouseListener and MouseAdapter to Screen
+- Screen::sendStationList was redefined as Screen::sendMap()
+- Successfully intergrated CityMap and GPS into MasterRoutingAgent in setup()
+
+1 MAY 2021
+- Refactored the codes in GPS::findChosenPath with the following sub-methods:
+  1. GPS::correctedDirection
+  2. GPS::schwartzianTransform
+- Added a route direction checking feature (only applicable for GPS::findChosenPath) due to the way paths are filtered
+- The GPS screen is finally displaying the stations and the roads
+- Coordinates of Stations in CityMap were changed to some values that makes sense :)
+
+
+29 APRIL 2021
+- Updated the followings:
+  1. CityMap.java
+  2. GPS.java
+  3. TestScript.java
+- Updated the documentation (README)
+
+
+28 APRIL 2021 and beyond :)
+- Created some of the classes
+- Updated Station.java and some other files
+- Forked the proginal codes into Jade-Cars' repo
